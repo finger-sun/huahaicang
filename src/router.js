@@ -17,8 +17,8 @@ import Login from "./components/login.vue"  // 登录
 
 
 
-// import Customer from "./components/customer.vue"  //数据传递axios 模板
-// import Spouse from "./components/spouse.vue"
+import Customer from "./components/customer.vue"  //数据传递axios 模板
+import Spouse from "./components/spouse.vue"
 
 const routes=[
     {
@@ -56,14 +56,14 @@ const routes=[
 
 
 
-    // {
-    //     path:"/customer",
-    //     component:Customer
-    // },
-    // {
-    //     path:"/spouse",
-    //     component:Spouse
-    // }
+    {
+        path:"/customer",
+        component:Customer
+    },
+    {
+        path:"/spouse",
+        component:Spouse
+    }
 ]
 
 //实例化

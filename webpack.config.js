@@ -34,13 +34,14 @@ module.exports = {
         test: /\.css$/,
         loader: 'style-loader!css-loader'//添加对样式表的处理,内联样式  注意后添加的
       },
-      // {
-      //   test: /\.(eot|svg|ttf|woff|woff2)(\?\S*)?$/,
-      //   loader: 'file-loader',
-      //   options: {
-      //     name: 'fonts/[name].[ext]?[hash]' //目标文件夹
-      //   }
-      // }, //添加对字体文件的支持。
+
+      {
+        test: /\.(eot|svg|ttf|woff|woff2)(\?\S*)?$/,
+        loader: 'file-loader',
+        options: {
+          name: 'fonts/[name].[ext]?[hash]' //目标文件夹
+        }
+      }, //添加对字体文件的支持。
 
       {
         test: /\.(png|jpg|gif|svg)$/,
@@ -67,17 +68,26 @@ module.exports = {
     //           changeOrigin:true
     //       }
     // }
-
+     /*
+      在前端 发起 /v4/api/billboard/home请求
+            转发到  http://m.maizuo.com/v4/api/billboard/home
+     */
   },
   performance: {
     hints: false
   },
-  devtool: '#eval-source-map'
+  devtool: '#eval-source-map',
+
+  plugins:[
+    new webpack.ProvidePlugin({
+        axios: 'axios'  //各个模块都可以使用axios
+    }),
+  ]
 }
 
 if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map'
-  // http://vue-loader.vuejs.org/en/workflow/production.html
+  // http://vue-loader.vuejs.org/zh-cn/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
       'process.env': {
