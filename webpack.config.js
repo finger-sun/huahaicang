@@ -68,6 +68,15 @@ module.exports = {
     //           changeOrigin:true
     //       }
     // }
+    //请求nodejs 爬取的数据  locahost：3000
+    proxy:{
+       '/api/*': {
+              target: 'http://localhost:3000',
+              host: 'localhost:3000',
+              changeOrigin:true
+          }
+    }
+
      /*
       在前端 发起 /v4/api/billboard/home请求
             转发到  http://m.maizuo.com/v4/api/billboard/home
