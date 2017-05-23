@@ -2,14 +2,11 @@
   <div id="app">
       <router-view></router-view>
 
-      <!-- <ul class="table">
-          <router-link tag="li" to="/customer" activeClass="active">客户资料</router-link>
-          <router-link tag="li" to="/Spouse" activeClass="active">购物车</router-link>
-      </ul> -->
   </div>
 </template>
 
 <script>
+
 export default {
     data () {
       return {
@@ -20,5 +17,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-   
+    #app{
+        width:100%;
+      	height:100%
+      }
 </style>
