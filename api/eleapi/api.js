@@ -16,13 +16,13 @@ router.get("/category",function(req,res){
 
 //商品列表
 router.get("/brand",function(req,res){
-    spider("/ajaxapi-brandList.html?brand_id=800028645&label=&warehouse=VIP_SH&stock=&sort_order=&sort_by=&sortId=j_003&sort=&page_no=1&limit=20&req_brand_details=1",function(data){
+    spider("/ajaxapi-brandList.html?brand_id=800028833&label=&warehouse=VIP_HZ&stock=&sort_order=&sort_by=&sortId=j_003&sort=&page_no=1&limit=20&req_brand_details=1",function(data){
         res.send(data);
         console.log(data);
     })
 })
 
-http://m.huahaicang.cn/ajaxapi-brandList.html?brand_id=800028645&label=&warehouse=VIP_SH&stock=&sort_order=&sort_by=&sortId=j_003&sort=&page_no=1&limit=20&req_brand_details=1
+
 
 
 //http://m.huahaicang.cn/ajaxapi-brandList.html?brand_id=800028645
