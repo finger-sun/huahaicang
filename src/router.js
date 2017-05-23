@@ -13,7 +13,7 @@ import Cart from "./components/cart.vue"  // 购物车
 import User from "./components/user.vue"  // 个人中心
 import Register from "./components/register.vue"  // 注册
 import Login from "./components/login.vue"  // 登录
-
+import Address from "./components/address.vue"  // 地区
 
 
 
@@ -53,7 +53,10 @@ const routes=[
         path:"/login",
         component:Login
     },
-
+	{
+        path:"/address",
+        component:Address
+    },
 
 
     // {
@@ -68,6 +71,7 @@ const routes=[
 
 //实例化
 const router = new VueRouter({
+	mode:'history',
     routes,
 })
 

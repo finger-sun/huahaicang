@@ -20,32 +20,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    *{
-      margin:0px;
-      padding:0px;
-    }
-    html,body{
-      width:100%;
-      height:100%;
-    }
     #app{
-      .table{
-        background:#000;
-        width:100%;
-        position:fixed;
-        bottom:0px;
-        li{
-          float:left;
-          list-style: none;
-          width:10
-          0%;
-          text-align:center;
-          color:white;
-          line-height:40px;
-        }
-      }
-    }
-    .active{
-      background:red;
+    	height: 100%;
     }
 </style>
