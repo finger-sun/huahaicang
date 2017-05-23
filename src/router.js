@@ -32,7 +32,7 @@ const routes=[
         component:Home
     },
     {
-        path:"/brand",
+        path:"/brand/*",
         component:Brand
     },
     {

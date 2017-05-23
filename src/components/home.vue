@@ -11,37 +11,35 @@
 	    		<router-link tag="span" to="/user"><i class="hea iconfont icon-ren-copy"></i></router-link>
 	    	</div>
 	    </header>
-	    
+
 	    <div class="swiper-container" >
-	    	
+
             <!-- //swiper-wrapper 就包裹所有轮播的页面 -->
             <div class="swiper-wrapper">
-                <div class="swiper-slide" v-for="(data,index) in datalist" v-kerwinswiper="{index:index,callback:swiperload}">
+                <div class="swiper-slide" v-for="(data,index) in datalist" v-kerwinswiper="{index:index,callback:swiperload}" @click="handleSkip(data.link)">
                 	<img :src="data.pic" />
                 </div>
             </div>
             <!-- //加上下面这个div 就是加上分页器 -->
             <div class="swiper-pagination"></div>
         </div>
-        
-        
-        <div class="cc">       	
-	        <div class="aleft" v-for="(data,index) in cclist">
-	        	<router-link tag="span" to="/brand">
+
+
+        <div class="cc">
+	        <div class="aleft" v-for="(data,index) in cclist" @click="handleSkip(data.link)">
 	        		<img :src="data.pic" />
-	        	</router-link>
 	        </div>
         	<div class="aright">
-	        	<div class="arightin" v-for="(data,index) in cclist2">
+	        	<div class="arightin" v-for="(data,index) in cclist2" @click="handleSkip(data.link)">
 	        		<img :src="data.pic" />
 	        	</div>
         	</div>
-        	
+
         </div>
-        <div class="morning" v-for="(data,index) in cclist3">
+        <div class="morning" v-for="(data,index) in cclist3" @click="handleSkip(data.link)">
         	<img :src="data.pic" />
         </div>
-        <div class="main" v-for="(data,index) in main">
+        <div class="main" v-for="(data,index) in main" @click="handleSkip(data.link)">
         	<img :src="data.pic" />
         </div>
     </div>
@@ -49,6 +47,7 @@
 
 
 <script >
+    import router from "../router"; //引入路由对象 ， router.push 就可调用了
 	import "../assets/iconfont/iconfont.css";
     import axios from "axios";
     import Swiper from "swiper";
@@ -59,7 +58,7 @@
         mounted(){
             //请求后台数据
             axios.get("/api/category").then(res=>{
-                console.log(res);
+                // console.log(res);
                 this.datalist = res.data[575];
                 this.cclist = res.data[893];
                 this.cclist2 = res.data[894];
@@ -67,15 +66,6 @@
                 this.main = res.data[582];
             })
 
-            axios.get("/api/brand").then(res=>{
-                console.log(res);
-                // this.datalist = res.data.data.billboards
-            })
-
-            // axios.get("/v4/api/film/now-playing?&page=1&count=5").then(res=>{
-            //     console.log(res.data);
-            //     this.playinglist=res.data.data.films;
-            // })
         },
 
          data(){
@@ -100,8 +90,21 @@
                              speed:2000
                          });
                  }
+             },
+             //动态添加路由
+             handleSkip(id){             	
+                var num = id.substring(6,15);
+//              console.log(num)
+//              axios.get("/api/brand?id="+num).then(res=>{
+//              // console.log(res);    
+//          	})
+                // console.log(num);
+                // router.push(`/brand/?id=${num}`); //向服务器发送的数据
+                router.push(`/brand/${num}`);     //向子页发送的数据
+
              }
         },
+
          directives:{
              "kerwinswiper":{
                  inserted(el,binding,vnode){
@@ -154,7 +157,7 @@
 	}
 	.cc .aleft{
 		width:49%;
-		
+
 	}
 	.cc .aright{
 		height:3rem;

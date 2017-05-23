@@ -41,11 +41,10 @@
     
     export default{
         mounted(){
-        	axios.get("/api/brand").then(res=>{
+        	axios.get("/api/brand?id="+this.$route.params[0]).then(res=>{
                 console.log(res);
                 this.playinglist=res.data.data.goodsDtoList;
-            })
-
+           })
         },
         data(){
             return{
