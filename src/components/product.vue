@@ -2,12 +2,16 @@
     <div id="product">
         <header>
                 <span class="left" @click="handerclick()">
-                    <i class="iconfont icon-back"></i>
+                    <i class="iconfont icon-fanhui"></i>
                 </span>
             <span>VERSAC红色印花</span>
-            <span class="right">
-                <i class="iconfont icon-form"></i>
-            </span>
+            
+            <router-link to="/home">
+	            <span class="right">
+	                <i class="iconfont icon-zhuye"></i>   
+	            </span>
+            </router-link>
+            
         </header>
         <div class="main">
             <div class="banner">
@@ -110,7 +114,7 @@
        <div class="footer">
             <div class="left">
                 <router-link to="/cart">
-                    <i class="iconfont icon-cart"></i>
+                    <i class="iconfont icon-gouwuche"></i>
                 </router-link>
             </div>
             <div class="right">
@@ -122,7 +126,7 @@
 
 <script>
 import router from "../router";
-import "../assets/iconfont01/iconfont.css";
+//import "../assets/iconfont01/iconfont.css";
 import 'mint-ui/lib/style.css';
 // import router from "vue-router";
 
