@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from "vue-router"
 
+import Mintui from "mint-ui"
+Vue.use(Mintui);
 Vue.use(VueRouter);//初始化
 
 //加载路由地址
@@ -17,8 +19,8 @@ import Address from "./components/address.vue"  // 地区
 
 
 
-// import Customer from "./components/customer.vue"  //数据传递axios 模板
-// import Spouse from "./components/spouse.vue"
+import Customer from "./components/customer.vue"  //数据传递axios 模板
+import Spouse from "./components/spouse.vue"
 
 const routes=[
     {
@@ -59,21 +61,20 @@ const routes=[
     },
 
 
-    // {
-    //     path:"/customer",
-    //     component:Customer
-    // },
-    // {
-    //     path:"/spouse",
-    //     component:Spouse
-    // }
+    {
+        path:"/customer",
+        component:Customer
+    },
+    {
+        path:"/spouse",
+        component:Spouse
+    }
 ]
 
 //实例化
 const router = new VueRouter({
-	mode:'history',
-    routes,
-})
+    mode: 'history', // url 看起来美观了 。，支持两个值hash,histroy
+    routes  //es6  对象简写})
 
 //导出路由
 export default router;

@@ -1,3 +1,4 @@
+
 <template>
     <div id="customer">
         <p>编辑客户</p>
@@ -32,7 +33,7 @@
 
 </template>
 
-<script lang="scss" scoped>
+<script>
 import axios from "axios";
 export default{
     mounted(){
@@ -67,7 +68,7 @@ export default{
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     p{
         background:#000;
         text-align: center;
