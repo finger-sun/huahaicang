@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var api = require("./eleapi/api");
+var api = require("./api/api");
 
 var app = express();
 
