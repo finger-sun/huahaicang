@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from "vue-router"
 
+import Mintui from "mint-ui"
+Vue.use(Mintui);
 Vue.use(VueRouter);//初始化
 
 //加载路由地址
@@ -68,7 +70,8 @@ const routes=[
 
 //实例化
 const router = new VueRouter({
-    routes,
+    mode: 'history', // url 看起来美观了 。，支持两个值hash,histroy
+    routes  //es6  对象简写
 })
 
 //导出路由
