@@ -1,26 +1,25 @@
 <template>
     <div id="product">
         <header>
-                <span class="left" @click="handerclick()">
-                    <i class="iconfont icon-back"></i>
-                </span>
-            <span>VERSAC红色印花</span>
-            <span class="right">
-                <i class="iconfont icon-form"></i>
+            <span class="left" @click="handerclick()">
+                <i class="iconfont icon-fanhui"></i>
             </span>
+            <span class="center">{{goodslist.productName}}</span>
+            <router-link to="/home" tag="span" class="right">
+	             <i class="iconfont icon-zhuye"></i>
+            </router-link>
+
         </header>
         <div class="main">
             <div class="banner">
                 <mt-swipe :auto="0" :show-indicators="false">
                   <mt-swipe-item v-for="data in datalist">
-                      <img :src="data">
+                      <img :src="goodslist.imagePrefixURL">
                       <!-- data -->
                   </mt-swipe-item>
 
                 </mt-swipe>
            </div>
-
-
 
             <div class="prd-sale">
                 海涛魏霞拍下件5折
@@ -28,7 +27,7 @@
 
             <div class="good_info">
                 <h1>
-                    VERSACE哪款红色logo印花t
+                    {{goodslist.productName}}
                     <span>
                         <img src="http://a.vpimg3.com/upload/brandcool/0/2016/04/05/171/bc3a7b8e-d73e-4f8c-8fc3-0ea66990c64f.png">
                     </span>
@@ -42,6 +41,12 @@
                         价格表示人民币一口价，已包含税费和国际国内运费
                     </span>
                 </div>
+                <div class="pro-price">
+                    <span class="left">￥{{goodslist.vipshopPrice}}</span>
+                    <span class="center">国内参考价</span>
+                    <span class="right">￥{{goodslist.priceSummary.maxMarketPrice}}</span>
+
+                </div>
                 <div class="ht-zp">
                     <img src="https://m.huahaicang.cn/view-src/default/images/ht_zp.png" alt="">
                 </div>
@@ -49,7 +54,7 @@
                 <div class="good_salesize clearfix">
                     <span>尺码</span>
                     <ul class="good_size">
-                        <li>s</li>
+                        <li>{{goodslist.salePlatform}}</li>
                     </ul>
                 </div>
                 <div class="u-detail-line"></div>
@@ -70,11 +75,11 @@
                     <table>
                         <tr>
                             <td class="td-title">品牌名称</td>
-                            <td>Versace/范思泽</td>
+                            <td>{{goodslist.brandStoreEngName}}{{goodslist.brandStoreName}}</td>
                         </tr>
                         <tr>
                             <td class="td-title">商品名称</td>
-                            <td>Versace/男款红色log印花t</td>
+                            <td>{{goodslist.productName}}</td>
                         </tr>
                         <tr>
                             <td class="td-title">材质</td>
@@ -110,7 +115,7 @@
        <div class="footer">
             <div class="left">
                 <router-link to="/cart">
-                    <i class="iconfont icon-cart"></i>
+                    <i class="iconfont icon-gouwuche"></i>
                 </router-link>
             </div>
             <div class="right">
@@ -122,34 +127,45 @@
 
 <script>
 import router from "../router";
-import "../assets/iconfont01/iconfont.css";
 import 'mint-ui/lib/style.css';
-// import router from "vue-router";
 
 //http://a.vpimg2.com/upload/merchandise/2168/FOX-2472806800-1.jpg
 
 
     export default{
         mounted(){
+            //请求后台数据
+            axios.get("/api/brand").then(res=>{
+                this.goodslist = res.data.data.goodsDtoList[0];
+                console.log(this.goodslist);
+                // this.num = (this.goodslist).sustr(-5,1);
+                // console.log(num)
+                this.num = res.data.data.goodsDtoList[0].image;
+                console.log(this.num);
+
+            })
+
 
         },
+
         data(){
             return{
+                num:[],
+                goodslist:[],
                 datalist:["http://a.vpimg2.com/upload/merchandise/2168/FOX-2472806800-1.jpg",
                  "http://a.vpimg2.com/upload/merchandise/2168/FOX-2472806800-2.jpg",
                  "http://a.vpimg2.com/upload/merchandise/2168/FOX-2472806800-3.jpg",
-                 "http://a.vpimg2.com/upload/merchandise/2168/FOX-2472806800-4.jpg"]
-                // datalist:["已婚","未婚","离异","丧偶"],
-
+                 "http://a.vpimg2.com/upload/merchandise/2168/FOX-2472806800-4.jpg"],
             }
         },
         methods:{
-
             handerclick(){
                 router.go(-1);
             }
         },
         computed:{
+
+
         }
     }
 </script>
@@ -165,19 +181,30 @@ import 'mint-ui/lib/style.css';
         height:0.96rem;
         font-size: .4rem;
         line-height: .96rem;
-        color:#fff;
         text-align:center;
-
+        color:#fff;
+        width:100%;
+        .center{
+            width:60%;
+            display:inline-block;
+            overflow:hidden;
+        }
         .left{
             float:left;
+            display:block;
+            width:15%;
             i{
                 font-size:.5rem;
             }
         }
         .right{
+            display:block;
+            width:15%;
             float:right;
             i{
                 font-size:.5rem;
+                color:#fff;
+
             }
         }
 
@@ -246,6 +273,31 @@ import 'mint-ui/lib/style.css';
                     float:right;
                     font-size:.28rem;
                     display: block;
+                }
+            }
+            .pro-price{
+                margin-bottom:.2rem;
+                line-height:.4rem;
+                background:#ffff;
+                .left{
+                    margin-left:.2rem;
+                    font-size:.36rem;
+                    font-weight: bold;
+                    line-height:.5rem;
+                    color: rgba(225,104,117,1)
+                }
+                .center{
+                        margin: .14rem 0 0 .16rem;
+                        font-size: .26rem;
+                        line-height: .26rem;
+                        color: #999;
+                }
+                .right{
+                        margin: .14rem 0 0 .16rem;
+                        font-size: .26rem;
+                        line-height: .26rem;
+                        color: #999;
+                        text-decoration: line-through;
                 }
             }
             .ht-zp{

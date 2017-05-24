@@ -1,81 +1,191 @@
 <template>
     <div>
-            这是home页面
+	    <header class="appheader">
+	    	<div class="left">
+	    		<i class="logo iconfont icon-hua"></i>
+	    		<i class="logo iconfont icon-hai"></i>
+	    		<i class="logo iconfont icon-cang"></i>
+	    	</div>
+	    	<div class="right">
+	    		<router-link tag="span" to="/cart"><i class="hea iconfont icon-gouwuche"></i></router-link>
+	    		<router-link tag="span" to="/user"><i class="hea iconfont icon-ren-copy"></i></router-link>
+	    	</div>
+	    </header>
+
+	    <div class="swiper-container" >
+
+            <!-- //swiper-wrapper 就包裹所有轮播的页面 -->
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" v-for="(data,index) in datalist" v-kerwinswiper="{index:index,callback:swiperload}" @click="handleSkip(data.link)">
+                	<img :src="data.pic" />
+                </div>
+            </div>
+            <!-- //加上下面这个div 就是加上分页器 -->
+            <div class="swiper-pagination"></div>
+        </div>
+
+
+        <div class="cc">
+	        <div class="aleft" v-for="(data,index) in cclist" @click="handleSkip(data.link)">
+	        		<img :src="data.pic" />
+	        </div>
+        	<div class="aright">
+	        	<div class="arightin" v-for="(data,index) in cclist2" @click="handleSkip(data.link)">
+	        		<img :src="data.pic" />
+	        	</div>
+        	</div>
+
+        </div>
+        <div class="morning" v-for="(data,index) in cclist3" @click="handleSkip(data.link)">
+        	<img :src="data.pic" />
+        </div>
+        <div class="main" v-for="(data,index) in main" @click="handleSkip(data.link)">
+        	<img :src="data.pic" />
+        </div>
     </div>
 </template>
 
 
 <script >
+    import router from "../router"; //引入路由对象 ， router.push 就可调用了
+	import "../assets/iconfont/iconfont.css";
     import axios from "axios";
-    // import Swiper from "swiper";
-    // console.log(Swiper);
-    // import "swiper/dist/css/swiper.css"; //单独引入swiper css文件
+    import Swiper from "swiper";
+    import "swiper/dist/css/swiper.css"; //单独引入swiper css文件
 
     export default{
 
         mounted(){
             //请求后台数据
             axios.get("/api/category").then(res=>{
-                console.log(res);
-                // this.datalist = res.data.data.billboards
+                // console.log(res);
+                this.datalist = res.data[575];
+                this.cclist = res.data[893];
+                this.cclist2 = res.data[894];
+                this.cclist3 = res.data[580];
+                this.main = res.data[582];
             })
 
-            axios.get("/api/brand").then(res=>{
-                console.log(res);
-                // this.datalist = res.data.data.billboards
-            })
-
-            // axios.get("/v4/api/film/now-playing?&page=1&count=5").then(res=>{
-            //     console.log(res.data);
-            //     this.playinglist=res.data.data.films;
-            // })
         },
 
-        // data(){
-        //     return {
-        //         datalist :[],
-        //         playinglist:[]
-        //     }
-        // },
+         data(){
+             return {
+              datalist :[],
+              cclist:[],
+              cclist2:[],
+              cclist3:[],
+              main :[]
+             }
+         },
 
-        // methods:{
-        //     swiperload(index){
-        //         if(index==this.datalist.length-1){
-        //             //初始化swiper对象
-        //                 new Swiper('.swiper-container',{
-        //                     pagination: '.swiper-pagination', //初始化 分页器
-        //                     paginationClickable: true, //分页器可以点击
-        //                     autoplay: 1000,
-        //                     loop:true,
-        //                     speed:2000
-        //                 });
-        //         }
-        //     }
-        // },
-        // directives:{
-        //     "kerwinswiper":{
-        //         inserted(el,binding,vnode){
-        //             binding.value.callback(binding.value.index);
-        //         }
-        //     }
-        // }
+         methods:{
+             swiperload(index){
+                 if(index==this.datalist.length-1){
+                     //初始化swiper对象
+                         new Swiper('.swiper-container',{
+                             pagination: '.swiper-pagination', //初始化 分页器
+                             paginationClickable: true, //分页器可以点击
+                             autoplay: 1000,
+                             loop:true,
+                             speed:2000
+                         });
+                 }
+             },
+             //动态添加路由
+             handleSkip(id){
+                var num = id.substring(6,15);
+                // console.log(num);
+                // router.push(`/brand/?id=${num}`); //向服务器发送的数据
+                router.push(`/brand/${num}`);     //向子页发送的数据
+
+             }
+        },
+
+         directives:{
+             "kerwinswiper":{
+                 inserted(el,binding,vnode){
+                     binding.value.callback(binding.value.index);
+                }
+            }
+        }
     }
 </script>
 
 <style lang="scss" scoped>
-    p{
-        background:#000;
-        text-align: center;
-        color:white;
-        line-height: 40px;
-    }
+	header.appheader .logo{
+		color:white;
+		font-size:.60rem;
+		}
+	i{
+		height:.67rem;
+	}
+	.hea{
+		color:white;
+		font-size:0.60rem;
+		line-height:0.6rem;
+	}
+    header.appheader{
+    	z-index:1;
+		height:.96rem;
+		line-height:.96rem;
+    	background: #dd2628;
 
-    li{
-        border:1px solid #000;
-        padding:5px;
+		overflow: hidden;
     }
-    .active{
-        background: red;
-    }
+	.right{
+		float:right;
+		height:.76rem;
+	}
+	.left{
+		float:left;
+		height:.76rem;
+		vertical-align: middle;
+		letter-spacing:0rem;
+	}
+	.cc{
+		display: flex;
+		height:3rem;
+		overflow: hidden;
+		justify-content: space-around;
+	}
+	.cc img{
+		width:100%;height:100%;
+	}
+	.cc .aleft{
+		width:49%;
 
+	}
+	.cc .aright{
+		height:3rem;
+		display: flex;
+		flex-direction: column;
+		width:49%;
+		justify-content: space-around;
+	}
+	.arightin{
+		height:1.5rem;
+	}
+	.morning{
+		width:100%;height:100%;
+		overflow:hidden;
+		font-size:0rem;
+	}
+	.morning img{
+		width:100%;height:100%;
+	}
+	.main{
+		font-size:0rem;
+		width:100%;height:100%;
+	}
+	.main img{
+		width:100%;height:100%;
+	}
+	.swiper-container{
+		width:100%;
+		height:3rem;
+			img{
+				width: 100%;
+				height:100%;
+			}
+		}
 </style>

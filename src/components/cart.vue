@@ -2,7 +2,7 @@
     <div id="cart">
         <header>
             <span class="left" @click="handerclick()">
-                <i class="iconfont icon-back"></i>
+                <i class="iconfont icon-fanhui"></i>
             </span>
             <span>购物车</span>
         </header>

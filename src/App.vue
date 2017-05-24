@@ -17,17 +17,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    *{
-      margin:0px;
-      padding:0px;
-    }
-    html,body{
-      width:100%;
-      height:100%;
-    }
     #app{
-          width:100%;
-      height:100%;
-    }
-
+        width:100%;
+      	height:100%
+      }
 </style>
