@@ -8,8 +8,8 @@
 	    		海涛男装微瑕专场
 	    	</div>
 	    	<div class="gouwu">
-	    		<router-link tag="span" to="/cart"><i class="hea iconfont icon-gouwuche"></i></router-link>
-	    		<router-link tag="span" to="/user"><i class="hea iconfont icon-ren-copy"></i></router-link>
+	    		<span @click="tocart()"><i class="hea iconfont icon-gouwuche"></i></span>
+	    		<span @click="touser()"><i class="hea iconfont icon-ren-copy"></i></span>
 	    	</div>
 	    </div>
 	    <div class="price">
@@ -54,7 +54,17 @@
         methods:{
 				handclick(){
 					router.go(-1);
-				}
+				},
+				tocart(){
+	         		axios.get("/api/tocart").then(res=>{
+	         			router.push(res.data);
+	         		})
+	         	},
+	         	touser(){
+	         		axios.get("/api/touser").then(res=>{
+	         			router.push(res.data);
+	         		})
+	         	},
 
             },
 

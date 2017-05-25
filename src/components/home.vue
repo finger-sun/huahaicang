@@ -7,8 +7,8 @@
 	    		<i class="logo iconfont icon-cang"></i>
 	    	</div>
 	    	<div class="right">
-	    		<router-link tag="span" to="/cart"><i class="hea iconfont icon-gouwuche"></i></router-link>
-	    		<router-link tag="span" to="/user"><i class="hea iconfont icon-ren-copy"></i></router-link>
+	    		<span @click="tocart()"><i class="hea iconfont icon-gouwuche"></i></span>
+	    		<span @click="touser()"><i class="hea iconfont icon-ren-copy"></i></span>
 	    	</div>
 	    </header>
 
@@ -65,6 +65,7 @@
                 this.cclist3 = res.data[580];
                 this.main = res.data[582];
             })
+            this.userId = window.sessionStorage.getItem('userid');
 
         },
 
@@ -74,11 +75,24 @@
               cclist:[],
               cclist2:[],
               cclist3:[],
-              main :[]
+              main :[],
+              userId:"",
              }
          },
-
+		computed:{
+			
+		},
          methods:{
+         	tocart(){
+         		axios.get("/api/tocart").then(res=>{
+         			router.push(res.data);
+         		})
+         	},
+         	touser(){
+         		axios.get("/api/touser").then(res=>{
+         			router.push(res.data);
+         		})
+         	},
              swiperload(index){
                  if(index==this.datalist.length-1){
                      //初始化swiper对象

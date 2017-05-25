@@ -113,9 +113,9 @@
        <!-- 固定在底部的购买按钮 -->
        <div class="footer">
             <div class="left">
-                <router-link to="/cart">
+                <span @click="tocart()">
                     <i class="iconfont icon-gouwuche"></i>
-                </router-link>
+                </span>
             </div>
             <div class="right">
                 <span>加入购物车</span>
@@ -151,7 +151,12 @@ import 'mint-ui/lib/style.css';
 
             handerclick(){
                 router.go(-1);
-            }
+            },
+            tocart(){
+         		axios.get("/api/tocart").then(res=>{
+         			router.push(res.data);
+         		})
+         	},
         },
         computed:{
         }

@@ -6,18 +6,16 @@
 	   </header>	    
 		<div id="loginMain">
 			<h3>可使用唯品会账号直接登录</h3>
-			<form  method="post">
+			<form  method="post" :action="address">
 				<ul>
-					<li>
-						<input type="text" name="userid" placeholder="邮箱/手机号" />
-						<i></i>
+					<li :class="userIdliClass">
+						<input type="text" name="userId" placeholder="手机号" v-model="userId" @input="userIdInput()" @focus="userFocus()" @blur="userIdBlur()"/>
 					</li>
-					<p class="userIdPoint">{{userIdPoint}}</p>
-					<li>
-						<input type="password" name="password" placeholder="密码" />
-						<i></i>
+					<p :class="userIdClass">{{userIdPoint}}</p>
+					<li :class="passwordLiClass">
+						<input type="password" name="password" placeholder="密码" v-model="password" @input="passwordInput()" @focus="passwordFocus()" @blur="passwordBlur()"/>
 					</li>
-					<p class="passwordPoint">{{passwordPoint}}</p>
+					<p :class="passwordClass">{{passwordPoint}}</p>
 				</ul>
 				
 				<input type="submit" value="登录" />
@@ -33,18 +31,65 @@
 
         },
         data(){
-            return{
-				address:"/",
+            return{				
+				userId:"",
 				userIdPoint:"",
+				userIdClass:"default",
+				userIdliClass:"",
+				userIdIsOk:false,
+				password:"",
 				passwordPoint:"",
+				passwordClass:"",
+				passwordLiClass:"",
+				passwordIsOk:false,
             }
         },
         methods:{
-
-            },
+        	userFocus(){
+        		//手机号验证后给出提示信息,双重三目运算+正则表达式验证
+        		this.userIdIsOk = false;
+        		this.userIdPoint = this.userId==""?"请输入手机号":/^\d{1,4}$/.test(this.userId)?"请输入正确的手机号":"";  
+        		this.userIdClass = "default";
+        		this.userIdliClass = "lidefault";
+        	},
+			userIdInput(){
+				this.userIdPoint = /^\d{1,5}$/.test(this.userId)?"请输入正确的手机号":"";
+				this.userIdClass = "default";
+				this.userIdliClass = "lidefault";
+			},
+			userIdBlur(){
+				this.userIdPoint = this.userId==""?"请输入手机号":/^\d{1,4}$/.test(this.userId)?"手机号码有误，请重新输入":"";
+				this.userIdClass = "warning";
+				this.userIdliClass = /^\d{0,4}$/.test(this.userId)?"liwarning":"lidefault";
+				this.userIdIsOk = /^\d{0,4}$/.test(this.userId)?false:true;
+				axios.post("/api/findUser",{
+					userId:this.userId,
+				}).then(res=>{
+					this.userIdPoint = res.data?"":"账号未注册,请先注册";
+				});
+			},
+			passwordFocus(){
+				this.passwordIsOk = false;
+        		this.passwordPoint = this.password==""?"请输入6-20位密码":/^[0-9a-zA-Z]{6,20}$/.test(this.password)?"":"6-20位字母或数字组成";
+        		this.passwordClass = "default"
+        		this.passwordLiClass = "lidefault";
+        	},
+			passwordInput(){
+				this.passwordPoint = /^[0-9a-zA-Z]{6,20}$/.test(this.password)?"":"6-20位字母或数字组成";
+				this.passwordClass = "default"
+				this.passwordLiClass = "lidefault";
+			},
+			passwordBlur(){
+				this.passwordClass = "warning"
+				this.passwordLiClass = /^[0-9a-zA-Z]{6,20}$/.test(this.password)?"lidefault":"liwarning";
+				this.passwordIsOk = /^[0-9a-zA-Z]{6,20}$/.test(this.password)?true:false;
+			},
+        },
 
         computed:{
-			
+			address(){
+				return this.userIdIsOk && this.passwordIsOk ? "/api/loginvalidate" : "/";
+			}
         }
 
     }
@@ -87,6 +132,8 @@
 	    		padding: 0.16rem 0.3rem;
 	    		border-bottom: 0.02rem solid black;
 	    		list-style: none;
+	    		height: 0.8rem;
+	    		line-height: 0.8rem;
 	    		input{
 	    			border: none;
 	    			color: #666666;
@@ -94,21 +141,33 @@
 	    			font-size: 0.28rem;
 	    			height: 0.3rem;
 	    			outline: none;
-	    		}
-	    		.place{
-	    			background: #f7f3f0;
-	    		}
-	    		
+	    			vertical-align: middle;
+	    			background: rgba(0,0,0,0);
+	    		}	    			    	
+	    	}
+	    	.lidefault{
+	    		background: none;
+	    	}
+	    	.liwarning{
+	    		background: #F7F3F0;
 	    	}
 	    	p{
 	    		display: none;
 	    	}
-	    	.wrong{
-	    		display: block;color: #DD2628;
+	    	.default{
+	    		display: block;
+	    		font-size: 0.28rem;
+	    		color: #404040;
+	    		text-indent: 0.2rem;
+	    		padding: 0.1rem;
 	    	}
-	    	.active{
-	    		display: block;color: #404040;
-	    	}
+	    	.warning{
+	    		display: block;
+	    		color: #DD2628;
+	    		text-indent: 0.2rem;
+	    		padding: 0.1rem;
+	    		font-size: 0.28rem;
+	    	}	    	
 	    	input[type="submit"]{
 	    		padding: 0.16rem 0;
 	    		border: none;

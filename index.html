@@ -19,7 +19,8 @@
         height: 100%;
         font-family: Helvetica Neue,Helvetica,microsoft yahei,Arial,sans-serif;
     }
-  </style>  <body>
+  </style>  
+  <body>
     <div id="app"></div>
     <script src="/dist/build.js"></script>
     <script type="text/javascript">
@@ -31,7 +32,10 @@
         //让可布局宽度跟设计稿是一样的
 
         //动态计算fontsize
-        document.documentElement.style.fontSize =document.documentElement.clientWidth/750*100 +"px"; //计算方便，设置成了100px
+        document.documentElement.style.fontSize =document.documentElement.clientWidth/750*100 +"px"; 
+        //计算方便，设置成了100px
         //document.documentElement.clientWidth/设计稿的宽度*100 (iphone6 就是750，iphone5 就是640)
-    </script>  </body>
+        window.sessionStorage.setItem('userid', "");
+    </script>  
+  </body>
 </html>

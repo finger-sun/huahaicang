@@ -26,6 +26,7 @@ const store = new vuex.Store({
         //     //
         //     store.commit("DEL_SHOPCAR_MUTATION",payload);
         // }
+        "ADD_ADDRESS_ACTION":function()
     },
 
     mutations:{

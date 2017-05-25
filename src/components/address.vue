@@ -9,64 +9,69 @@
 			<li class="ccc">当前收货地区</li>
 			<li class="now">
 				<i class="iconfont"></i>
-				浙江
+				{{nowaddress}}
 				<i class="iconfont right"></i>
 			</li>
 			<li class="ccc">华中地区</li>
-			<li>湖南</li>
-			<li>湖北</li>
-			<li>河南</li>
-			<li>江西</li>
+			<li @click="handleclick($event)">湖南</li>
+			<li @click="handleclick($event)">湖北</li>
+			<li @click="handleclick($event)">河南</li>
+			<li @click="handleclick($event)">江西</li>
 			<li class="ccc">西南地区</li>
-			<li>四川</li>
-			<li>贵州</li>
-			<li>云南</li>
-			<li>重庆</li>
-			<li>西藏</li>
+			<li @click="handleclick($event)">四川</li>
+			<li @click="handleclick($event)">贵州</li>
+			<li @click="handleclick($event)">云南</li>
+			<li @click="handleclick($event)">重庆</li>
+			<li @click="handleclick($event)">西藏</li>
 			<li class="ccc">华南地区</li>
-			<li>广东</li>
-			<li>广西</li>
-			<li>海南</li>
+			<li @click="handleclick($event)">广东</li>
+			<li @click="handleclick($event)">广西</li>
+			<li @click="handleclick($event)">海南</li>
 			<li class="ccc">华北地区</li>
-			<li>北京</li>
-			<li>河北</li>
-			<li>内蒙古</li>
-			<li>山西</li>
-			<li>天津</li>
+			<li @click="handleclick($event)">北京</li>
+			<li @click="handleclick($event)">河北</li>
+			<li @click="handleclick($event)">内蒙古</li>
+			<li @click="handleclick($event)">山西</li>
+			<li @click="handleclick($event)">天津</li>
 			<li class="ccc">华东地区</li>
-			<li>江苏</li>
-			<li>山东</li>
-			<li>上海</li>
-			<li>福建</li>
-			<li>浙江</li>
-			<li>安徽</li>
+			<li @click="handleclick($event)">江苏</li>
+			<li @click="handleclick($event)">山东</li>
+			<li @click="handleclick($event)">上海</li>
+			<li @click="handleclick($event)">福建</li>
+			<li @click="handleclick($event)">浙江</li>
+			<li @click="handleclick($event)">安徽</li>
 			<li class="ccc">东北地区</li>
-			<li>辽宁</li>
-			<li>黑龙江</li>
-			<li>吉林</li>
+			<li @click="handleclick($event)">辽宁</li>
+			<li @click="handleclick($event)">黑龙江</li>
+			<li @click="handleclick($event)">吉林</li>
 			<li class="ccc">西北地区</li>
-			<li>陕西</li>
-			<li>新疆</li>
-			<li>甘肃</li>
-			<li>宁夏</li>
-			<li>青海</li>
+			<li @click="handleclick($event)">陕西</li>
+			<li @click="handleclick($event)">新疆</li>
+			<li @click="handleclick($event)">甘肃</li>
+			<li @click="handleclick($event)">宁夏</li>
+			<li @click="handleclick($event)">青海</li>
 		</ul>
 	</div>
 </template>
 
 <script>
+	import router from "../router";
 	export default{
         mounted(){
 
         },
         data(){
             return{
-
+				nowaddress:"湖南",
             }
         },
         methods:{
-
-            },
+			handleclick(ev){
+				this.nowaddress = ev.path[0].innerHTML;
+				this.$emit("theadress",this.nowaddress);
+				router.go(-1);
+			},
+        },
 
         computed:{
 
