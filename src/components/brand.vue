@@ -18,7 +18,7 @@
 	    	<span class="sp3">显示有货<input type="radio" name="ral"></span>
 	    </div>
 	    <div class="box">
-		    <div class="main" v-for="(data,index) in playinglist">
+		    <div class="main" v-for="(data,index) in playinglist" @click="handleSkip(data.brandId,index)">
 		    	<router-link tag="div" to="/product">
 			    	<img :src="data.image" />
 			    	<p class="n">{{data.productName}}</p>
@@ -32,6 +32,7 @@
 	    </div>
     </div>
 </template>
+
 <script>
 	import router from "../router";
 	import "../assets/iconfont/iconfont.css";
@@ -41,33 +42,48 @@
 
     export default{
         mounted(){
-        	axios.get("/api/brand").then(res=>{
+        	axios.get("/api/brand?id="+this.$route.params[0]).then(res=>{
                 // console.log(res);
                 this.playinglist=res.data.data.goodsDtoList;
-            })
             //获取从上一页传送的id
-            console.log(this.$route.params[0]);
 
+            // console.log(this.playinglist)
 
+            // console.log(this.$route.params);
+            })
         },
         data(){
             return{
-
-                playinglist:[]
+                num:[],
+                playinglist:[],
             }
         },
         methods:{
 
-				handclick(){
-					router.go(-1);
-				}
-
+            handleSkip(id,index){
+                // console.log(id);
+                // console.log(index);
+                router.push(`product/${id}`);
+                // console.log(id+"商品id2");
+                //给product发送的下标 发送到store
+                this.$store.dispatch("BRAND_INDEX",index);
             },
+                // handleSkip(){
+                //     var num = this.$route.params[0];
+                //     // var num = id.substring(6,15);
+                //     // router.push(`/brand/${num}`);     //向子页发送的数据
+                // },
+
+			handclick(){
+				router.go(-1);
+			}
+
+        },
+
 
         computed:{
 
         }
-
     }
 </script>
 
@@ -86,7 +102,6 @@
 }
  .tou .iconfont{
  	font-size:.50rem;
-
  }
  .iconfont{
  	font-size:0.36rem;
@@ -100,7 +115,6 @@
  }
  .sp1{
  	margin-left:.36rem;
-
  }
  .sp3{
  	position:absolute;

@@ -79,7 +79,7 @@
          },
 
          methods:{
-             swiperload(index){
+            swiperload(index){
                  if(index==this.datalist.length-1){
                      //初始化swiper对象
                          new Swiper('.swiper-container',{
@@ -90,17 +90,15 @@
                              speed:2000
                          });
                  }
-             },
+
+            },
              //动态添加路由
              handleSkip(id){
                 var num = id.substring(6,15);
-                // console.log(num);
-                // router.push(`/brand/?id=${num}`); //向服务器发送的数据
                 router.push(`/brand/${num}`);     //向子页发送的数据
-
-             }
+                console.log(id);
+            }
         },
-
          directives:{
              "kerwinswiper":{
                  inserted(el,binding,vnode){

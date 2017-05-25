@@ -7,48 +7,75 @@ vue.use(vuex);
 const store = new vuex.Store({
 
     state:{
-        datalist:""
+        BrandIndex:"",//一类商品的下标
+        shoplist:[],
+        sizeIndex:[],
     },
 
     actions:{
+        //接受从页面发的数据
+        "BRAND_INDEX":function(store,payload){
+            // console.log(payload + "商品下标");
+            store.commit("BRAND_INDEX_MUTATION",payload);
+        },
+
+        "SIZE_INDEX":function(store,payload){
+            console.log(payload + "尺码");
+            store.commit("BRAND_INDEX_MUTATION",payload);
+        },
+
         "ADD_SHOPCAR_ACTION":function(store,payload){
-            console.log(payload + "222");
+            // console.log(payload);
+            store.commit("ADD_SHOPCAR_MUTATION",payload);
+
+        },
+
+        "DEL_SHOPCAR_ACTION":function(store,payload){
+            // console.log(payload);
             //可以根据这参数去后台请求数据， 也可以在这里对数据进行加工
             //通过commit 方法把数据提交给mutations
             //
-            store.commit("ADD_SHOPCAR_MUTATION",payload);
+            store.commit("DEL_SHOPCAR_MUTATION",payload);
         },
 
-        // "DEL_SHOPCAR_ACTION":function(store,payload){
-        //     // console.log(payload);
-        //     //可以根据这参数去后台请求数据， 也可以在这里对数据进行加工
-        //     //通过commit 方法把数据提交给mutations
-        //     //
-        //     store.commit("DEL_SHOPCAR_MUTATION",payload);
-        // }
+
     },
 
     mutations:{
-        "ADD_SHOPCAR_MUTATION":function(state,shoplist){
-            // console.log(payload);
-            // 操作state数据
-            state.datalist=shoplist;
-            // var datalist = state.datalist.filter(item=>item.id==payload.id);
-            // if(datalist.length==0){
-            //     state.datalist.push(payload);
-            // }else{
-            //     //num 加1
-            //     datalist[0].num++;
-            // }
-
-            // console.log(state.datalist);
+        "BRAND_INDEX_MUTATION":function(state,payload){
+            state.BrandIndex=payload;
         },
 
-        // "DEL_SHOPCAR_MUTATION":function(state,payload){
-        //     console.log(payload);
+        "SIZE_INDEX_MUTATION":function(state,payload){
+            state.sizeIndex.push(payload);
+            // console(payload);
+        },
 
-        //     state.datalist.splice(payload,1); //删除数据
-        // }
+        "ADD_SHOPCAR_MUTATION":function(state,payload){
+            // state.shoplist.push(payload);
+            console.log(payload);
+            console.log(payload.brandLogoUrl);
+            console.log(state.shoplist[0]);
+             var shoplist = state.shoplist.filter(item=>item.image==payload.image);
+            if(shoplist.length==0){
+                state.shoplist.push(payload);
+            }else{
+                //num 加1
+                shoplist[0].buyPeople++;
+            }
+        },
+        "DEL_SHOPCAR_MUTATION":function(state,payload){
+            // console.log(payload);
+            // state.shoplist.splice(payload,1); //删除数据
+            console.log(payload);
+            state.shoplist.forEach((item,index)=>{
+                if(item.image==payload.image){
+                    state.shoplist.splice(index,1);
+                    // state.shoplist[item].buyPeople=-1;
+                }
+            })
+        },
+
     }
 })
 

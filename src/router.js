@@ -8,7 +8,7 @@ Vue.use(VueRouter);//初始化
 //加载路由地址
 
 import Home from "./components/home.vue"  // 首页
-import BrandList from "./components/brand.vue"  //商品列表
+import Brand from "./components/brand.vue"  //商品列表
 import Product from "./components/product.vue"  // 商品详情
 import Cart from "./components/cart.vue"  // 购物车
 
@@ -19,8 +19,8 @@ import Address from "./components/address.vue"  // 地区
 
 
 
-import Customer from "./components/customer.vue"  //数据传递axios 模板
-import Spouse from "./components/spouse.vue"
+// import Customer from "./components/customer.vue"  //数据传递axios 模板
+// import Spouse from "./components/spouse.vue"
 
 const routes=[
     {
@@ -33,10 +33,10 @@ const routes=[
     },
     {
         path:"/brand/*",
-        component:BrandList
+        component:Brand
     },
     {
-        path:"/product",
+        path:"/product/*",
         component:Product
     },
     {
@@ -61,14 +61,14 @@ const routes=[
     },
 
 
-    {
-        path:"/customer",
-        component:Customer
-    },
-    {
-        path:"/spouse",
-        component:Spouse
-    }
+    // {
+    //     path:"/customer",
+    //     component:Customer
+    // },
+    // {
+    //     path:"/spouse",
+    //     component:Spouse
+    // }
 ]
 
 //实例化
