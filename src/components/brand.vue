@@ -1,8 +1,10 @@
 <template>
 	<div>
 	    <div class="tou">
-		    	<div class="fanhui" @click="handclick()">
-		    		<i class="hea iconfont icon-fanhui"></i>
+		    	<div class="fanhui">
+                    <router-link to="/home" tag="span" >
+		    		    <i class="hea iconfont icon-fanhui"></i>
+                    </router-link>
 		    	</div>
 	    	<div class="name" >
 	    		海涛男装微瑕专场
@@ -43,7 +45,9 @@
 
     export default{
         mounted(){
+                if(this.$store.state.brand){
 
+                }
 
         // 	axios.get("/api/brand?id="+this.$route.params[0]).then(res=>{
         //         // console.log(res);
@@ -78,10 +82,6 @@
                 //     // var num = id.substring(6,15);
                 //     // router.push(`/brand/${num}`);     //向子页发送的数据
                 // },
-
-			handclick(){
-				router.go(-1);
-			}
 
         },
         beforeUpdate(){

@@ -22,8 +22,9 @@
                         </a>
 
                         <!-- 商品数量加减 -->
-                        <div class="amount-confirm-box">
+                        <div class="amount-confirm-box" @click="numbut(data)">
                             <a @click="data.buyPeople=data.buyPeople-1">-</a>
+                            <!-- <a @click="data.buyPeople=data.buyPeople-1">-</a> -->
                             <span>{{data.buyPeople + 1}}</span>
                             <a @click="data.buyPeople=data.buyPeople+1">+</a>
                         </div>
@@ -94,7 +95,10 @@
                     // data =[];
                     this.checkedValue=[];
 
-                }
+                },
+            numbut(data){
+                console.log("but")
+            }
         },
         computed:{
             goodslist(){

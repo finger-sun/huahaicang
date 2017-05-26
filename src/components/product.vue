@@ -56,9 +56,10 @@
                 <div class="good_salesize clearfix">
                     <span>尺码</span>
                     <ul class="good_size">
-                        <li v-for="(data,index) in sizelist" :class="SizeIndex==index?'active':''" @click="headerclick(index)">
+                        <li v-for="(data,inx) in brandlist[index].sizes" :class="SizeIndex==index?'active':''" @click="headerclick(index)">
                             {{data.name}}
                         </li>
+                        <!-- <li>{{brandlist[index].sizes[0].name}}</li> -->
                     </ul>
                 </div>
                 <div class="u-detail-line"></div>
@@ -122,6 +123,8 @@
                     <i class="iconfont icon-gouwuche"></i>
                 </router-link>
             </div>
+
+            <!-- 将商品的信息（商品列表 加 下标 ）给购物车 -->
             <div class="right" @click="headerCark(brandlist[index])">
                 <span>加入购物车</span>
             </div>
@@ -138,8 +141,8 @@ import 'mint-ui/lib/style.css';
 
     export default{
          mounted(){
-            this.index = this.$store.state.BrandIndex;
-            this.brandlist = this.$store.state.brand;
+            // this.index = this.$store.state.BrandIndex;
+            // this.brandlist = this.$store.state.brand;
             console.log(this.brandlist);
             this.tttt = this.brandlist;
             console.log(this.tttt);
@@ -157,6 +160,7 @@ import 'mint-ui/lib/style.css';
                 router.go(-2);
             },
             headerclick(index){
+                console.log(index);
                 this.SizeIndex=index;
                 this.$store.dispatch("SIZE_INDEX",index);
 
@@ -170,7 +174,7 @@ import 'mint-ui/lib/style.css';
                 // this.MygoodslistString = JSON.stringify(this.Mygoodslist);
                 // console.log(this.MygoodslistString);
 
-                // console.log(goodslist);
+                console.log(goodslist);
                 this.$store.dispatch("ADD_SHOPCAR_ACTION",goodslist);
             }
         },
@@ -260,21 +264,21 @@ import 'mint-ui/lib/style.css';
                 position: relative;
                 span{
                     background:url(http://m.huahaicang.cn/view-src/default/images/huahaicang/xiangqing-qiepian_08.png)
-                    no-repeat;
+                            no-repeat 20px 10px;
                     position: absolute;
                     top:10px;
-                    right:-20px;
+                    right:10px;
                     text-align:center;
                     display:inline-block;
-                }
-                img{
                     width:180px;
-                    display:inline-block;
+                    img{
+                        width:180px;
+                        display:inline-block;
+                    }
                 }
             }
             .ht-price{
                 height:70px;
-                // background-color: #fff;
                 border: 1px solid red;
                 padding:.3rem .2rem;
                 border-top:1px solid #eee;
