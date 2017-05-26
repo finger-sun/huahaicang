@@ -84,13 +84,13 @@
 		},
          methods:{
          	tocart(){
-         		axios.get("/api/tocart").then(res=>{
-         			router.push(res.data);
+         		axios.get("/api/logined").then(res=>{
+         			router.push(res.data?"/cart":"/login");
          		})
          	},
          	touser(){
-         		axios.get("/api/touser").then(res=>{
-         			router.push(res.data);
+         		axios.get("/api/logined").then(res=>{
+         			router.push(res.data?"/user":"/login");
          		})
          	},
              swiperload(index){
@@ -104,21 +104,15 @@
                              speed:2000
                          });
                  }
-             },
+
+            },
              //动态添加路由
-             handleSkip(id){             	
+             handleSkip(id){
                 var num = id.substring(6,15);
-//              console.log(num)
-//              axios.get("/api/brand?id="+num).then(res=>{
-//              // console.log(res);    
-//          	})
-                // console.log(num);
-                // router.push(`/brand/?id=${num}`); //向服务器发送的数据
                 router.push(`/brand/${num}`);     //向子页发送的数据
-
-             }
+                console.log(id);
+            }
         },
-
          directives:{
              "kerwinswiper":{
                  inserted(el,binding,vnode){

@@ -12,7 +12,7 @@
 	    		<div class="photo">
 	    			<img src="http://m.huahaicang.cn/view-src/default/images/user/defaultHeadImage.png"/>
 	    		</div>
-	    		<p>{{userId}}</p>
+	    		<p>{{user}}</p>
 	    	</div>	    	
     	</div>
     	<div class="userOrder">
@@ -70,6 +70,8 @@
     export default{
         mounted(){
         	this.userId = location.search.substring(8);
+        	this.$store.dispatch("ADD_USERID",userId);
+        	
         	this.$on("theadderss",function(value){
                     console.log(value);
             })
@@ -82,6 +84,7 @@
         },
         methods:{
 			quitclick(){
+				this.$store.dispatch("DEL_USERID","");
 				axios.post("/api/quit").then(res=>{
 					console.log(res.data);
 					if(res.data == "success"){
@@ -90,12 +93,14 @@
 				})
 			},
 			handleclick(){
-				router.go(-2);
+				//router.go(-2);
 			}
         },
 
         computed:{
-
+			user(){
+				return this.$store.state.userId;
+			}
         }
 
     }

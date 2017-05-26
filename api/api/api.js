@@ -129,25 +129,25 @@ router.post("/quit",function(req,res){
       })
 })
 
-router.get("/tocart",function(req,res){
+router.get("/logined",function(req,res){
 	//console.log(req.session.userId);
 	if(!req.session.userId){
-		res.send("/login")
+		res.send(false)
 	}else{
-		res.send("/cart")
+		res.send(true)
 	}
 })
 
-router.get("/touser",function(req,res){
+/*router.get("/touser",function(req,res){
 	//console.log(req.session.userId);
 	if(!req.session.userId){
 		res.send("/login")
 	}else{
 		res.send("/user")
 	}
-})
+})*/
 //返回购物车信息
-router.post("/shopcar",function(req,res){
+router.post("/getshopcar",function(req,res){
     dbhandler.shopcar.find({
         userId:req.body.userId,
     },function(error,result){
@@ -163,31 +163,115 @@ router.post("/shopcar",function(req,res){
     })
 })
 //加入购物车
-router.post("/registervalidate",function(req,res){
+router.post("/setshopcar",function(req,res){
     dbhandler.shopcar.find({
         userId:req.body.userId,
         listId:req.body.listId,
-        
+        goodsindex:req.body.goodsindex
     },function(error,result){
         if(!error){
             if(result.length>0){ 
-                res.redirect("/register");
+            	//找到了
+                dbhandler.shopcar.update({
+                	userId:result[0].userId,
+        			listId:result[0].listId,
+        			goodsindex:result[0].goodsindex,
+                },{
+                	goodsNum:result[0].goodsNum + 1,
+                },function(error,result){
+                    if(!error){
+                        res.send("success");
+                    }
+                })
             }else{             
-                dbhandler.user.create({
+                dbhandler.shopcar.create({
                     userId:req.body.userId,
-                    password:req.body.password,
-                    shopcars:"",
+                    listId:req.body.listId,
+        			goodsindex:req.body.goodsindex,
+        			goodsNum:req.body.goodsNum,
+    				goodsData:res.body.goodsData
                 } ,function(error,result){
                     if(!error){
-                        res.redirect("/login");
+                        res.send("success");
                     }
                 }) 
             }
         }else{
-        	res.redirect("/register");
+        	res.send("error");
+        }       
+    })
+})
+//更新购物车数据库
+router.post("/updatashopcar",function(req,res){
+    dbhandler.shopcar.find({
+        userId:req.body.userId,
+        listId:req.body.listId,
+        goodsindex:req.body.goodsindex
+    },function(error,result){
+        if(!error){
+            if(result.length>0){ 
+            	//找到了
+                dbhandler.shopcar.update({
+                	userId:result[0].userId,
+        			listId:result[0].listId,
+        			goodsindex:result[0].goodsindex,        			
+                },{
+                	goodsNum:req.body.goodsNum,  //更新它
+                },function(error,result){
+                    if(!error){
+                        res.send("success");
+                    }
+                })
+            }else{             
+                dbhandler.shopcar.create({
+                    userId:req.body.userId,
+                    listId:req.body.listId,
+        			goodsindex:req.body.goodsindex,
+        			goodsNum:req.body.goodsNum,
+    				goodsData:res.body.goodsData
+                },function(error,result){
+                    if(!error){
+                        res.send("success");
+                    }
+                }) 
+            }
+        }else{
+        	res.send("error");
         }       
     })
 })
 
+//删除购物车
+router.post("/removeshopcar",function(req,res){
+	dbhandler.shopcar.find({
+		userId:req.body.userId,
+        listId:req.body.listId,
+        goodsindex:req.body.goodsindex
+	},function(error,result){
+		if(!error){
+			if(result.length>0){
+				dbhandler.shopcar.remove({
+                	userId:result[0].userId,
+        			listId:result[0].listId,
+        			goodsindex:result[0].goodsindex,
+        			goodsNum:result[0].goodsNum,
+    				goodsData:result[0].goodsData
+    			},function(error,result){
+    				if(!error){
+    					res.send("success");
+    				}
+    			})
+			}
+		}
+	})
+})
+/*dbhandler.shopcar.update({
+	username:req.body.username,
+    goodsId:req.body.goodsId
+},{num:parseInt(req.body.num)+parseInt(result[0].num)},function(error,result){
+	if(!error){
+		console.log(result)
+	}
+})*/
 module.exports= router;
 

@@ -1,30 +1,25 @@
 <template>
     <div id="product">
         <header>
-                <span class="left" @click="handerclick()">
-                    <i class="iconfont icon-fanhui"></i>
-                </span>
-            <span>VERSAC红色印花</span>
-            
-            <router-link to="/home">
-	            <span class="right">
-	                <i class="iconfont icon-zhuye"></i>   
-	            </span>
+            <span class="left" @click="handerclick()">
+                <i class="iconfont icon-fanhui"></i>
+            </span>
+            <span class="center">{{goodslist.productName}}</span>
+            <router-link to="/home" tag="span" class="right">
+                 <i class="iconfont icon-zhuye"></i>
             </router-link>
-            
+
         </header>
         <div class="main">
             <div class="banner">
                 <mt-swipe :auto="0" :show-indicators="false">
-                  <mt-swipe-item v-for="data in datalist">
-                      <img :src="data">
+                  <mt-swipe-item v-for="(data,index) in numlist">
+                      <img :src="imgafter + data + imgbefore">
                       <!-- data -->
                   </mt-swipe-item>
 
                 </mt-swipe>
            </div>
-
-
 
             <div class="prd-sale">
                 海涛魏霞拍下件5折
@@ -32,10 +27,10 @@
 
             <div class="good_info">
                 <h1>
-                    VERSACE哪款红色logo印花t
-                    <span>
-                        <img src="http://a.vpimg3.com/upload/brandcool/0/2016/04/05/171/bc3a7b8e-d73e-4f8c-8fc3-0ea66990c64f.png">
-                    </span>
+                    {{goodslist.productName}}
+                        <span class="bg">
+                            <img :src="goodslist.brandLogoUrl">
+                        </span>
                 </h1>
 
                 <div class="ht-price">
@@ -46,6 +41,12 @@
                         价格表示人民币一口价，已包含税费和国际国内运费
                     </span>
                 </div>
+                <div class="pro-price">
+                    <span class="left">￥{{goodslist.vipshopPrice}}</span>
+                    <span class="center">国内参考价</span>
+                    <span class="right">￥{{goodslist.marketPrice}}</span>
+
+                </div>
                 <div class="ht-zp">
                     <img src="https://m.huahaicang.cn/view-src/default/images/ht_zp.png" alt="">
                 </div>
@@ -53,7 +54,9 @@
                 <div class="good_salesize clearfix">
                     <span>尺码</span>
                     <ul class="good_size">
-                        <li>s</li>
+                        <li v-for="(data,index) in sizelist" :class="SizeIndex==index?'active':''" @click="headerclick(index)">
+                            {{data.name}}
+                        </li>
                     </ul>
                 </div>
                 <div class="u-detail-line"></div>
@@ -74,11 +77,11 @@
                     <table>
                         <tr>
                             <td class="td-title">品牌名称</td>
-                            <td>Versace/范思泽</td>
+                            <td>{{goodslist.brandStoreEngName}}{{goodslist.brandStoreName}}</td>
                         </tr>
                         <tr>
                             <td class="td-title">商品名称</td>
-                            <td>Versace/男款红色log印花t</td>
+                            <td>{{goodslist.productName}}</td>
                         </tr>
                         <tr>
                             <td class="td-title">材质</td>
@@ -117,7 +120,7 @@
                     <i class="iconfont icon-gouwuche"></i>
                 </span>
             </div>
-            <div class="right">
+            <div class="right" @click="headerCark(goodslist)">
                 <span>加入购物车</span>
             </div>
        </div>
@@ -126,39 +129,89 @@
 
 <script>
 import router from "../router";
-//import "../assets/iconfont01/iconfont.css";
 import 'mint-ui/lib/style.css';
-// import router from "vue-router";
-
+import { MessageBox } from 'mint-ui';
 //http://a.vpimg2.com/upload/merchandise/2168/FOX-2472806800-1.jpg
 
 
     export default{
         mounted(){
+            axios.get("/api/brand?id="+this.$route.params[0]).then(res=>{
+                this.goodslist=res.data.data.goodsDtoList[this.indexlist];// 0要传下标
+                this.MyGoodslist=res.data.data.goodsDtoList;
+                 this.sizelist = this.goodslist.sizes;
+                 this.imgindex =this.goodslist.image.slice(-5,-4);
+                 this.imgafter = (this.goodslist.image.slice(0,-5));
+                 this.imgbefore = (this.goodslist.image.slice(-4,));
+                 //图片的张数
+                this.numlist = (this.num.slice(0,this.imgindex));
+                 // console.log(this.goodslist.image);
+                 // console.log(this.imgindex);
+                 console.log(this.indexlist);
+                 // console.log(this.goodslist);
+                 console.log(res.data.data.goodsDtoList);
+                 console.log(typeof this.goodslist);
+            })
+
+                // console.log(this.$route.params.index);
+            // console.log(indexlist)
 
         },
+
         data(){
             return{
-                datalist:["http://a.vpimg2.com/upload/merchandise/2168/FOX-2472806800-1.jpg",
-                 "http://a.vpimg2.com/upload/merchandise/2168/FOX-2472806800-2.jpg",
-                 "http://a.vpimg2.com/upload/merchandise/2168/FOX-2472806800-3.jpg",
-                 "http://a.vpimg2.com/upload/merchandise/2168/FOX-2472806800-4.jpg"]
-                // datalist:["已婚","未婚","离异","丧偶"],
 
+                SizeIndex:"99",
+                imgindex:"",
+                imgafter:"",
+                imgbefore:"",
+                num:["1","2","3","4","5","6","7","8"],
+                numlist:[],
+                imglist:[],
+                sizelist:[],
+                goodslist:[],
+                MyGoodslist:[],
+                Mygoodslist:{},
+                MySizeIndex:{},
+                MygoodslistString:"",
             }
         },
         methods:{
-
             handerclick(){
-                router.go(-1);
+                router.go(-2);
+            },
+            headerclick(index){
+                this.SizeIndex=index;
+                this.$store.dispatch("SIZE_INDEX",index);
+
+            },
+            //加入购物车
+            headerCark(goodslist){
+                axios.get("/api/logined").then(res=>{
+         			if(res.data){
+         				this.$store.dispatch("ADD_SHOPCAR_ACTION",goodslist);
+         				axios.post("/api/setshopcar",{
+         					userId:this.$store.state.userId,
+						    brandId:this.$route.params[0],
+						    productId:,
+						    goodsNum:String,
+						    goodsData:String
+         				})
+         			}
+         		})
+                
             },
             tocart(){
-         		axios.get("/api/tocart").then(res=>{
-         			router.push(res.data);
+         		axios.get("/api/logined").then(res=>{
+         			router.push(res.data?"/cart":"/login");
          		})
          	},
         },
         computed:{
+            //获取从上一页传送的下标
+            indexlist(){
+                    return this.$store.state.BrandIndex; //拿到状态数据
+            },
         }
     }
 </script>
@@ -174,19 +227,30 @@ import 'mint-ui/lib/style.css';
         height:0.96rem;
         font-size: .4rem;
         line-height: .96rem;
-        color:#fff;
         text-align:center;
-
+        color:#fff;
+        width:100%;
+        .center{
+            width:60%;
+            display:inline-block;
+            overflow:hidden;
+        }
         .left{
             float:left;
+            display:block;
+            width:15%;
             i{
                 font-size:.5rem;
             }
         }
         .right{
+            display:block;
+            width:15%;
             float:right;
             i{
                 font-size:.5rem;
+                color:#fff;
+
             }
         }
 
@@ -196,12 +260,10 @@ import 'mint-ui/lib/style.css';
         height:100%;
         padding-bottom: 30px;
         .banner{
-            // border: 1px solid red;
             width:600px;
             height:600px;
             margin:0 auto;
             overflow:hidden;
-            // background:#ccc;
             text-align:center;
             img{
                 width:480px;
@@ -225,11 +287,18 @@ import 'mint-ui/lib/style.css';
                 color: #000;
                 background-color: #fff;
                 position: relative;
-                img{
-                    width:150px;
+                span{
+                    background:url(http://m.huahaicang.cn/view-src/default/images/huahaicang/xiangqing-qiepian_08.png)
+                    no-repeat;
                     position: absolute;
                     top:10px;
-                    right:20px;
+                    right:-20px;
+                    text-align:center;
+                    display:inline-block;
+                }
+                img{
+                    width:180px;
+                    display:inline-block;
                 }
             }
             .ht-price{
@@ -255,6 +324,31 @@ import 'mint-ui/lib/style.css';
                     float:right;
                     font-size:.28rem;
                     display: block;
+                }
+            }
+            .pro-price{
+                margin-bottom:.2rem;
+                line-height:.4rem;
+                background:#ffff;
+                .left{
+                    margin-left:.2rem;
+                    font-size:.36rem;
+                    font-weight: bold;
+                    line-height:.5rem;
+                    color: rgba(225,104,117,1)
+                }
+                .center{
+                        margin: .14rem 0 0 .16rem;
+                        font-size: .26rem;
+                        line-height: .26rem;
+                        color: #999;
+                }
+                .right{
+                        margin: .14rem 0 0 .16rem;
+                        font-size: .26rem;
+                        line-height: .26rem;
+                        color: #999;
+                        text-decoration: line-through;
                 }
             }
             .ht-zp{
@@ -285,20 +379,26 @@ import 'mint-ui/lib/style.css';
                 .good_size{
                     text-align:center;
                     overflow: hidden;
+                    }
                     li{
                         float:left;
                         border:0;
                         color:#fff;
                         cursor:text;
-                        background:#dd2628;
+                        background:#ccc;
                         margin:0 1.66666% 8px;
-                        width:30%;
+                        width:29%;
                         height:.9rem;
                         font-size:0.3rem;
-                        border:1px solid #d2d2d2;;
+                        border:1px solid #d2d2d2;
                         line-height:.9rem;
+
                     }
-                }
+                    .active{
+                        background:#dd2628;
+
+
+                    }
             }
             .ht-time{
                 padding:.2rem;

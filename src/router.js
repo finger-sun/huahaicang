@@ -19,8 +19,8 @@ import Address from "./components/address.vue"  // 地区
 
 
 
-import Customer from "./components/customer.vue"  //数据传递axios 模板
-import Spouse from "./components/spouse.vue"
+// import Customer from "./components/customer.vue"  //数据传递axios 模板
+// import Spouse from "./components/spouse.vue"
 
 const routes=[
     {
@@ -36,7 +36,7 @@ const routes=[
         component:Brand
     },
     {
-        path:"/product",
+        path:"/product/*",
         component:Product
     },
     {
@@ -61,14 +61,14 @@ const routes=[
     },
 
 
-    {
-        path:"/customer",
-        component:Customer
-    },
-    {
-        path:"/spouse",
-        component:Spouse
-    }
+    // {
+    //     path:"/customer",
+    //     component:Customer
+    // },
+    // {
+    //     path:"/spouse",
+    //     component:Spouse
+    // }
 ]
 
 //实例化

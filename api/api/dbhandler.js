@@ -16,7 +16,7 @@ mongoose.model("user",new Schema(user)); //创建一个模型，通过这个模�
 var shopcar= {
     userId:String,
     listId:String,
-    goodsIndex:String,
+    goodsindex:String,
     goodsNum:String,
     goodsData:String
 }

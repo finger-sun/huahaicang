@@ -1,6 +1,6 @@
 <template>
-	<div>
-	    <div class="tou">	    	
+	<div>    	
+	    <div class="tou">
 		    	<div class="fanhui" @click="handclick()">
 		    		<i class="hea iconfont icon-fanhui"></i>
 		    	</div>
@@ -18,7 +18,7 @@
 	    	<span class="sp3">显示有货<input type="radio" name="ral"></span>
 	    </div>
 	    <div class="box">
-		    <div class="main" v-for="(data,index) in playinglist">
+		    <div class="main" v-for="(data,index) in playinglist" @click="handleSkip(data.brandId,index)">
 		    	<router-link tag="div" to="/product">
 			    	<img :src="data.image" />
 			    	<p class="n">{{data.productName}}</p>
@@ -32,23 +32,30 @@
 	    </div>
     </div>
 </template>
+
 <script>
 	import router from "../router";
 	import "../assets/iconfont/iconfont.css";
     import axios from "axios";
     import Swiper from "swiper";
-    import "swiper/dist/css/swiper.css";
-    
+    import "swiper/dist/css/swiper.css";   
+
     export default{
         mounted(){
         	axios.get("/api/brand?id="+this.$route.params[0]).then(res=>{
-                console.log(res);
+                // console.log(res);
                 this.playinglist=res.data.data.goodsDtoList;
-           })
+            //获取从上一页传送的id
+
+            // console.log(this.playinglist)
+
+            // console.log(this.$route.params);
+            })
         },
         data(){
             return{
-                playinglist:[]
+                num:[],
+                playinglist:[],
             }
         },
         methods:{
@@ -56,22 +63,39 @@
 					router.go(-1);
 				},
 				tocart(){
-	         		axios.get("/api/tocart").then(res=>{
-	         			router.push(res.data);
+	         		axios.get("/api/logined").then(res=>{
+	         			router.push(res.data?"/cart":"/login");
 	         		})
 	         	},
 	         	touser(){
-	         		axios.get("/api/touser").then(res=>{
-	         			router.push(res.data);
+	         		axios.get("/api/logined").then(res=>{
+	         			router.push(res.data?"/user":"/login");
 	         		})
-	         	},
 
+            handleSkip(id,index){
+                // console.log(id);
+                // console.log(index);
+                router.push(`product/${id}`);
+                // console.log(id+"商品id2");
+                //给product发送的下标 发送到store
+                this.$store.dispatch("BRAND_INDEX",index);
             },
+                // handleSkip(){
+                //     var num = this.$route.params[0];
+                //     // var num = id.substring(6,15);
+                //     // router.push(`/brand/${num}`);     //向子页发送的数据
+                // },
+
+			handclick(){
+				router.go(-1);
+			}
+
+        },
+
 
         computed:{
 
         }
-
     }
 </script>
 
@@ -86,11 +110,10 @@
 	font-size:.36rem;
 	line-height:.96rem;
 	justify-content: space-between;
-	text-indent:0.2rem;
-}  
+	text-indent:0.2rem;  
+}
  .tou .iconfont{
- 	font-size:.50rem;
- 	
+ 	font-size:.50rem;	
  }
  .iconfont{
  	font-size:0.36rem;
@@ -103,8 +126,7 @@
 	background: #f3f3f1;
  }
  .sp1{
- 	margin-left:.36rem;
- 	
+ 	margin-left:.36rem; 	
  }
  .sp3{
  	position:absolute;
@@ -125,8 +147,8 @@
  	text-align: left;
  	overflow: hidden;
  	text-indent:0.17rem;
- 	position:relative;
- 	
+ 	position:relative; 	
+
  }
  .main img{
  	width:100%;
@@ -144,7 +166,7 @@
  	font-size:0.4rem;
  	height:44px;
  	line-height:44px;
- 	
+
  }
  .main .p .p-sp1{
  	text-decoration:line-through;
@@ -156,6 +178,7 @@
  	position:absolute;
  	right:0.2rem;
  	line-height:44px;
- 	background: url(../assets/xiangqing-qiepian_19.png) no-repeat scroll center center /100%;	
+
+ 	background: url(../assets/xiangqing-qiepian_19.png) no-repeat scroll center center /100%;
  }
 </style>
