@@ -68,8 +68,12 @@
         methods:{
 			handleclick(ev){
 				this.nowaddress = ev.path[0].innerHTML;
-				this.$emit("theadress",this.nowaddress);
-				router.go(-1);
+				console.log(this.nowaddress);
+				this.$store.dispatch("ADD_ADDRESS_ACTION",this.nowaddress).then(res=>{
+					//console.log(11)
+					router.go(-1);
+				})
+				
 			},
         },
 

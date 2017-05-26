@@ -173,11 +173,11 @@ router.post("/setshopcar",function(req,res){
             if(result.length>0){ 
             	//找到了
                 dbhandler.shopcar.update({
-                	userId:result[0].userId,
-        			listId:result[0].listId,
-        			goodsindex:result[0].goodsindex,
+                	userId:req.body.userId,
+			        listId:req.body.listId,
+			        goodsindex:req.body.goodsindex
                 },{
-                	goodsNum:result[0].goodsNum + 1,
+                	goodsNum:result[0].goodsNum +1,
                 },function(error,result){
                     if(!error){
                         res.send("success");
@@ -189,7 +189,7 @@ router.post("/setshopcar",function(req,res){
                     listId:req.body.listId,
         			goodsindex:req.body.goodsindex,
         			goodsNum:req.body.goodsNum,
-    				goodsData:res.body.goodsData
+    				goodsData:req.body.goodsData
                 } ,function(error,result){
                     if(!error){
                         res.send("success");
@@ -216,7 +216,7 @@ router.post("/updatashopcar",function(req,res){
         			listId:result[0].listId,
         			goodsindex:result[0].goodsindex,        			
                 },{
-                	goodsNum:req.body.goodsNum,  //更新它
+                	goodsNum:req.body.goodsNum + 1,  //更新它
                 },function(error,result){
                     if(!error){
                         res.send("success");
@@ -227,8 +227,8 @@ router.post("/updatashopcar",function(req,res){
                     userId:req.body.userId,
                     listId:req.body.listId,
         			goodsindex:req.body.goodsindex,
-        			goodsNum:req.body.goodsNum,
-    				goodsData:res.body.goodsData
+        			goodsNum:req.body.goodsNum + 1,
+    				goodsData:req.body.goodsData
                 },function(error,result){
                     if(!error){
                         res.send("success");
@@ -251,11 +251,9 @@ router.post("/removeshopcar",function(req,res){
 		if(!error){
 			if(result.length>0){
 				dbhandler.shopcar.remove({
-                	userId:result[0].userId,
-        			listId:result[0].listId,
-        			goodsindex:result[0].goodsindex,
-        			goodsNum:result[0].goodsNum,
-    				goodsData:result[0].goodsData
+                	userId:req.body.userId,
+			        listId:req.body.listId,
+			        goodsindex:req.body.goodsindex
     			},function(error,result){
     				if(!error){
     					res.send("success");

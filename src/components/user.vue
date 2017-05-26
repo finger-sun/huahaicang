@@ -35,7 +35,7 @@
     		<a class="divTop" href="/address">
     			<i class="oi4"></i>
     			收货地区
-    			<span class="right">浙江<i class="oi"></i></span>
+    			<span class="right">{{address}}<i class="oi"></i></span>
     		</a>
     		<div class="divBottom">
     			<i class="oi5"></i>
@@ -70,11 +70,9 @@
     export default{
         mounted(){
         	this.userId = location.search.substring(8);
-        	this.$store.dispatch("ADD_USERID",userId);
-        	
-        	this.$on("theadderss",function(value){
-                    console.log(value);
-            })
+        	if(this.userId !=""){
+        		this.$store.dispatch("ADD_USERID",this.userId);
+        	}       	       	
         },
         data(){
             return{
@@ -88,7 +86,7 @@
 				axios.post("/api/quit").then(res=>{
 					console.log(res.data);
 					if(res.data == "success"){
-						router.push("/login");
+						router.push("/home");
 					}
 				})
 			},
@@ -100,6 +98,9 @@
         computed:{
 			user(){
 				return this.$store.state.userId;
+			},
+			address(){
+				return this.$store.state.address;
 			}
         }
 

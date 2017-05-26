@@ -31,6 +31,7 @@
 		    </div>
 	    </div>
     </div>
+
 </template>
 
 <script>
@@ -42,36 +43,40 @@
 
     export default{
         mounted(){
-        	axios.get("/api/brand?id="+this.$route.params[0]).then(res=>{
-                // console.log(res);
-                this.playinglist=res.data.data.goodsDtoList;
-            //获取从上一页传送的id
 
-            // console.log(this.playinglist)
 
-            // console.log(this.$route.params);
-            })
+        // 	axios.get("/api/brand?id="+this.$route.params[0]).then(res=>{
+        //         // console.log(res);
+        //         this.playinglist=res.data.data.goodsDtoList;
+        //     //获取从上一页传送的id
+
+        //     // console.log(this.playinglist)
+
+        //     // console.log(this.$route.params);
+        //     })
+
         },
         data(){
             return{
                 num:[],
-                playinglist:[],
+                // playinglist:[],
+
             }
         },
         methods:{
-				handclick(){
-					router.go(-1);
-				},
-				tocart(){
-	         		axios.get("/api/logined").then(res=>{
-	         			router.push(res.data?"/cart":"/login");
-	         		})
-	         	},
-	         	touser(){
-	         		axios.get("/api/logined").then(res=>{
-	         			router.push(res.data?"/user":"/login");
-	         		})
-
+			handclick(){
+				router.go(-1);
+			},
+			tocart(){
+         		axios.get("/api/logined").then(res=>{
+         			router.push(res.data?"/cart":"/login");
+         		})
+         	},
+         	touser(){
+         		axios.get("/api/logined").then(res=>{
+         			router.push(res.data?"/user":"/login");
+         		})
+			},
             handleSkip(id,index){
                 // console.log(id);
                 // console.log(index);
@@ -91,9 +96,15 @@
 			}
 
         },
+        beforeUpdate(){
 
+        },
 
         computed:{
+            //获取的商品列表
+            playinglist(){
+                    return this.$store.state.brand; //拿到状态数据
+            },
 
         }
     }

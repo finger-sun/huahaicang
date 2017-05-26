@@ -8,7 +8,7 @@
         </header>
 
         <div class="main">
-                <div class="cartlist clearfix" v-for="(data,index) in goodslist">
+                <div class="cartlist clearfix" v-for="(data,index) in goodslist" >
                     <input id="inp"  type="checkbox" :value="data" v-model="checkedValue"/>
 
                     <a href="" class="cart_image">
@@ -22,10 +22,10 @@
                         </a>
 
                         <!-- 商品数量加减 -->
-                        <div class="amount-confirm-box">
-                            <a @click="data.buyPeople=data.buyPeople-1">-</a>
+                        <div class="amount-confirm-box" @click="sumbut(data)">
+                            <a @click="data.buyPeople = data.buyPeople-1">-</a>
                             <span>{{data.buyPeople + 1}}</span>
-                            <a @click="data.buyPeople=data.buyPeople+1">+</a>
+                            <a @click="data.buyPeople = data.buyPeople+1">+</a>
                         </div>
                         <a href="" class="cart_price">
                             ￥{{data.vipshopPrice}}
@@ -33,10 +33,16 @@
                         <span class="delete" @click="handleDelClick(data)">
                             <img src="https://m.huahaicang.cn/view-src/default/images/common/scan_layer-33.png">
                         </span>
-
                     </div>
+                        
                 </div>
-
+                
+            
+                
+                <!--<div v-for="(data,index) in cartlist">
+                    	11
+                </div>-->
+                <!--{{cartlist}}-->   
         </div>
         <!-- {{goodslist}} -->
        <!-- 固定在底部的结算按钮 -->
@@ -57,14 +63,20 @@
     export default{
         mounted(){
             axios.post('/api/getshopcar', {
-                userId:"",
+                userId:this.$store.state.userId,
             }).then(res=>{
             	console.log(res);
+            	console.log(111);
+            	
+             this.$store.dispatch("CART",res.data);
+
             })
-            // console.log(this.goodslist);
+//          setTimeout("console.log(11111);",5000);
+              
             //console.log(this.$store.state.shoplist);
 
         },
+        
         data(){
                 return{
                     num:"",
@@ -78,15 +90,39 @@
         methods:{
             handerclick(){
                     router.go(-1)
-            },
-
+            },			
             handleDelClick(data){
                     console.log(data);
                     this.$store.dispatch("DEL_SHOPCAR_ACTION",data);
-                    data =[];
-                }
+                    // data =[];
+                    this.checkedValue=[];
+                    axios.post("/api/removeshopcar",{
+						userId:this.$store.state.userId,
+					    listId:data.brandId,   
+					    goodsindex:data.spuId,
+					}).then(res=>{
+						console.log(res)
+					})
+
+               },
+            sumbut(data){
+            	console.log(data);
+            	axios.post("/api/updatashopcar",{
+					userId:this.$store.state.userId,
+				    listId:data.brandId,   
+				    goodsindex:data.spuId,
+				    goodsNum:data.buyPeople,
+				    goodsData:data
+				}).then(res=>{
+					console.log(res)
+				})
+            }
         },
         computed:{
+        	cartlist(){
+
+        		return this.$store.state.cart;//从vuex拿到购物车数据
+        	},
             goodslist(){
                     return this.$store.state.shoplist; //拿到状态数据
             },

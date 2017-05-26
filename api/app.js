@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   name: "userId",
   secret:"lwffcpsly", //加密用的
-  cookie: {maxAge: 1000*3600 }, //1小时
+  cookie: {maxAge: 10000*3600 }, //1小时
   resave: true,
   saveUninitialized: true,//一旦访问 就会设置一个cookie
 }));

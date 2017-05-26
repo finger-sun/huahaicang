@@ -17,8 +17,8 @@ var shopcar= {
     userId:String,
     listId:String,
     goodsindex:String,
-    goodsNum:String,
-    goodsData:String
+    goodsNum:Number,
+    goodsData:Object
 }
 mongoose.model("shopcar",new Schema(shopcar)); //创建一个模型，通过这个模型将来直接操作集合
 // model是article, 集合名字对应就是articles
