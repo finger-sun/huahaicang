@@ -7,29 +7,35 @@ vue.use(vuex);
 const store = new vuex.Store({
 
     state:{
+        brand:[],     //商品列表
         BrandIndex:"",//一类商品的下标
-        shoplist:[],
-        sizeIndex:[],
+        shoplist:[],  //加入购物的商品信息
+        sizeIndex:[], //商品尺码
     },
 
     actions:{
-        //接受从页面发的数据
+        //商品列表
+        "BRAND":function(store,payload){
+            console.log(payload);
+            store.commit("BRAND_MUTATION",payload);
+        },
+        //商品下标
         "BRAND_INDEX":function(store,payload){
             // console.log(payload + "商品下标");
             store.commit("BRAND_INDEX_MUTATION",payload);
         },
-
+        //商品尺码
         "SIZE_INDEX":function(store,payload){
             console.log(payload + "尺码");
             store.commit("BRAND_INDEX_MUTATION",payload);
         },
-
+        //加入购物车
         "ADD_SHOPCAR_ACTION":function(store,payload){
             // console.log(payload);
             store.commit("ADD_SHOPCAR_MUTATION",payload);
 
         },
-
+        //购物车删除商品
         "DEL_SHOPCAR_ACTION":function(store,payload){
             // console.log(payload);
             //可以根据这参数去后台请求数据， 也可以在这里对数据进行加工
@@ -42,6 +48,9 @@ const store = new vuex.Store({
     },
 
     mutations:{
+        "BRAND_MUTATION":function(state,payload){
+            state.brand=payload;
+        },
         "BRAND_INDEX_MUTATION":function(state,payload){
             state.BrandIndex=payload;
         },

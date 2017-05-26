@@ -4,20 +4,22 @@
             <span class="left" @click="handerclick()">
                 <i class="iconfont icon-fanhui"></i>
             </span>
-            <span class="center">{{goodslist.productName}}</span>
+            <span class="center">{{brandlist[index].productName}}</span>
             <router-link to="/home" tag="span" class="right">
                  <i class="iconfont icon-zhuye"></i>
             </router-link>
-
         </header>
+
         <div class="main">
             <div class="banner">
                 <mt-swipe :auto="0" :show-indicators="false">
-                  <mt-swipe-item v-for="(data,index) in numlist">
-                      <img :src="imgafter + data + imgbefore">
-                      <!-- data -->
-                  </mt-swipe-item>
+<!--                     <mt-swipe-item v-for="(data,index) in num.slice(0,brandlist[index].image.slice(-5,-4))">
+                        <img :src="brandlist[index].image.slice(0,-5) + data + brandlist[index].image.slice(-4)">
+                    </mt-swipe-item> -->
 
+                    <mt-swipe-item>
+                        <img :src="brandlist[index].image">
+                    </mt-swipe-item>
                 </mt-swipe>
            </div>
 
@@ -27,9 +29,9 @@
 
             <div class="good_info">
                 <h1>
-                    {{goodslist.productName}}
+                    {{brandlist[index].productName}}
                         <span class="bg">
-                            <img :src="goodslist.brandLogoUrl">
+                            <img :src="brandlist[index].brandLogoUrl">
                         </span>
                 </h1>
 
@@ -42,9 +44,9 @@
                     </span>
                 </div>
                 <div class="pro-price">
-                    <span class="left">￥{{goodslist.vipshopPrice}}</span>
+                    <span class="left">￥{{brandlist[index].vipshopPrice}}</span>
                     <span class="center">国内参考价</span>
-                    <span class="right">￥{{goodslist.marketPrice}}</span>
+                    <span class="right">￥{{brandlist[index].marketPrice}}</span>
 
                 </div>
                 <div class="ht-zp">
@@ -77,11 +79,11 @@
                     <table>
                         <tr>
                             <td class="td-title">品牌名称</td>
-                            <td>{{goodslist.brandStoreEngName}}{{goodslist.brandStoreName}}</td>
+                            <td>{{brandlist[index].brandStoreEngName}}{{brandlist[index].brandStoreName}}</td>
                         </tr>
                         <tr>
                             <td class="td-title">商品名称</td>
-                            <td>{{goodslist.productName}}</td>
+                            <td>{{brandlist[index].productName}}</td>
                         </tr>
                         <tr>
                             <td class="td-title">材质</td>
@@ -120,7 +122,7 @@
                     <i class="iconfont icon-gouwuche"></i>
                 </router-link>
             </div>
-            <div class="right" @click="headerCark(goodslist)">
+            <div class="right" @click="headerCark(brandlist[index])">
                 <span>加入购物车</span>
             </div>
        </div>
@@ -130,50 +132,24 @@
 <script>
 import router from "../router";
 import 'mint-ui/lib/style.css';
-import { MessageBox } from 'mint-ui';
+
 //http://a.vpimg2.com/upload/merchandise/2168/FOX-2472806800-1.jpg
 
 
     export default{
-        mounted(){
-            axios.get("/api/brand?id="+this.$route.params[0]).then(res=>{
-                this.goodslist=res.data.data.goodsDtoList[this.indexlist];// 0要传下标
-                this.MyGoodslist=res.data.data.goodsDtoList;
-                 this.sizelist = this.goodslist.sizes;
-                 this.imgindex =this.goodslist.image.slice(-5,-4);
-                 this.imgafter = (this.goodslist.image.slice(0,-5));
-                 this.imgbefore = (this.goodslist.image.slice(-4,));
-                 //图片的张数
-                this.numlist = (this.num.slice(0,this.imgindex));
-                 // console.log(this.goodslist.image);
-                 // console.log(this.imgindex);
-                 console.log(this.indexlist);
-                 // console.log(this.goodslist);
-                 console.log(res.data.data.goodsDtoList);
-                 console.log(typeof this.goodslist);
-            })
-
-                // console.log(this.$route.params.index);
-            // console.log(indexlist)
-
-        },
-
+         mounted(){
+            this.index = this.$store.state.BrandIndex;
+            this.brandlist = this.$store.state.brand;
+            console.log(this.brandlist);
+            this.tttt = this.brandlist;
+            console.log(this.tttt);
+         },
         data(){
             return{
-
                 SizeIndex:"99",
-                imgindex:"",
-                imgafter:"",
-                imgbefore:"",
                 num:["1","2","3","4","5","6","7","8"],
-                numlist:[],
-                imglist:[],
                 sizelist:[],
-                goodslist:[],
-                MyGoodslist:[],
-                Mygoodslist:{},
-                MySizeIndex:{},
-                MygoodslistString:"",
+                // goodslist:[],
             }
         },
         methods:{
@@ -199,9 +175,13 @@ import { MessageBox } from 'mint-ui';
             }
         },
         computed:{
-            //获取从上一页传送的下标
-            indexlist(){
+            //获取从上一页得到的下标
+            index(){
                     return this.$store.state.BrandIndex; //拿到状态数据
+            },
+            //获取的商品列表
+            brandlist(){
+                    return this.$store.state.brand; //拿到状态数据
             },
         }
     }

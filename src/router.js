@@ -31,6 +31,19 @@ const routes=[
         path:"/home",
         component:Home
     },
+
+    //当路径为/brand  /product时 重定向到home页面
+    {
+        path:"/brand",
+        component:Brand,
+        redirect:"/home"
+    },
+    {
+        path:"/product",
+        component:Product,
+        redirect:"/home"
+    },
+
     {
         path:"/brand/*",
         component:Brand

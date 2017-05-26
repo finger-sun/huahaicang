@@ -91,7 +91,9 @@
             handleDelClick(data){
                     console.log(data);
                     this.$store.dispatch("DEL_SHOPCAR_ACTION",data);
-                    data =[];
+                    // data =[];
+                    this.checkedValue=[];
+
                 }
         },
         computed:{

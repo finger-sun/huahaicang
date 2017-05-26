@@ -92,11 +92,23 @@
                  }
 
             },
+
              //动态添加路由
              handleSkip(id){
                 var num = id.substring(6,15);
                 router.push(`/brand/${num}`);     //向子页发送的数据
-                console.log(id);
+                // console.log(id);
+
+
+            axios.get("/api/brand?id="+ num ).then(res=>{
+            console.log(res);
+
+             //向vuex中储存的
+             this.$store.dispatch("BRAND",res.data.data.goodsDtoList);
+
+            })
+
+
             }
         },
          directives:{
