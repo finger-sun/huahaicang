@@ -56,7 +56,7 @@
                 <div class="good_salesize clearfix">
                     <span>尺码</span>
                     <ul class="good_size">
-                        <li v-for="(data,inx) in brandlist[index].sizes" :class="SizeIndex==index?'active':''" @click="headerclick(index)">
+                        <li v-for="(data,ind) in brandlist[index].sizes" :class="SizeIndex==ind?'active':''" @click="headerclick(ind)">
                             {{data.name}}
                         </li>
                         <!-- <li>{{brandlist[index].sizes[0].name}}</li> -->
@@ -119,9 +119,9 @@
        <!-- 固定在底部的购买按钮 -->
        <div class="footer">
             <div class="left">
-                <router-link to="/cart">
+                <span @click="tocart()">
                     <i class="iconfont icon-gouwuche"></i>
-                </router-link>
+                </span>
             </div>
 
             <!-- 将商品的信息（商品列表 加 下标 ）给购物车 -->
@@ -135,6 +135,8 @@
 <script>
 import router from "../router";
 import 'mint-ui/lib/style.css';
+import api from "../api";
+
 
 //http://a.vpimg2.com/upload/merchandise/2168/FOX-2472806800-1.jpg
 
@@ -159,24 +161,36 @@ import 'mint-ui/lib/style.css';
             handerclick(){
                 router.go(-2);
             },
-            headerclick(index){
-                console.log(index);
-                this.SizeIndex=index;
-                this.$store.dispatch("SIZE_INDEX",index);
+            headerclick(ind){
+                console.log(ind);
+
+                this.SizeIndex=ind;
+                // this.$store.dispatch("SIZE_INDEX",index);
+
 
             },
             //加入购物车
             headerCark(goodslist){
-                // this.Mygoodslist={
-                //     ShangPin : "goodslist",
-                //     ChiMa :"SizeIndex"
-                // };
-                // this.MygoodslistString = JSON.stringify(this.Mygoodslist);
-                // console.log(this.MygoodslistString);
 
-                console.log(goodslist);
-                this.$store.dispatch("ADD_SHOPCAR_ACTION",goodslist);
-            }
+
+				this.$store.dispatch("ADD_SHOPCAR_ACTION",goodslist);
+				axios.post(api.interface+"/api/setshopcar",{
+					userId:this.$store.state.userId,
+				    listId:goodslist.brandId,
+				    goodsindex:goodslist.spuId,
+				    goodsNum:1,
+				    goodsData:goodslist
+				}).then(res=>{
+
+				})
+
+
+            },
+            tocart(){
+         		axios.get(api.interface+"/api/logined").then(res=>{
+         			router.push(res.data?"/cart":"/login");
+         		})
+         	},
         },
         computed:{
             //获取从上一页得到的下标

@@ -8,36 +8,42 @@
         </header>
 
         <div class="main">
+
                 <div class="cartlist clearfix" v-for="(data,index) in goodslist">
                     <input id="inp"  type="checkbox" :value="data" v-model="checkedValue"/>
 
-                    <a href="" class="cart_image">
+                    <span class="cart_image">
                         <img :src="data.image">
-                    </a>
+                    </span>
                     <div class="cart_info">
-                        <a href="" class="cart_a">
+                        <span href="" class="cart_a">
                             <p class="cart_g_name">{{data.productName}}</p>
                             <p class="cart_b_name">花海仓APP-vi(第72批)</p>
                             <p class="fontgrey">尺码:{{data.sizes[0].name}}</p>
-                        </a>
+                        </span>
 
                         <!-- 商品数量加减 -->
-                        <div class="amount-confirm-box" @click="numbut(data)">
-                            <a @click="data.buyPeople=data.buyPeople-1">-</a>
-                            <!-- <a @click="data.buyPeople=data.buyPeople-1">-</a> -->
+
+                        <div class="amount-confirm-box" @click="sumbut(data)">
+                            <a @click="data.buyPeople = data.buyPeople-1">-</a>
                             <span>{{data.buyPeople + 1}}</span>
-                            <a @click="data.buyPeople=data.buyPeople+1">+</a>
+                            <a @click="data.buyPeople = data.buyPeople+1">+</a>
                         </div>
-                        <a href="" class="cart_price">
+                        <span class="cart_price">
                             ￥{{data.vipshopPrice}}
-                        </a>
+                        </span>
                         <span class="delete" @click="handleDelClick(data)">
                             <img src="https://m.huahaicang.cn/view-src/default/images/common/scan_layer-33.png">
                         </span>
-
                     </div>
+
                 </div>
 
+
+
+
+
+                <!-- {{cartlist[0].goodsData.agio}} -->
         </div>
         <!-- {{goodslist}} -->
        <!-- 固定在底部的结算按钮 -->
@@ -55,52 +61,87 @@
 <script>
     import router from "../router";
     import { MessageBox } from 'mint-ui';
+    import api from "../api";
+
     export default{
         mounted(){
-              //   axios.post('/user', {
-              //       firstName: 'Fred',
-              //       lastName: 'Flintstone'
-              //   }).then(function (response) {
 
-              //       console.log(response);
+            axios.post(api.interface+'/api/getshopcar', {
+                userId:this.$store.state.userId,
+            }).then(res=>{
+            	console.log(res);
+            	console.log("123res");
 
-              // }).catch(function (error) {
-
-              //   console.log(error);
-              // });
+             // this.$store.dispatch("CART",res.data);  ADD_SHOPCAR_MUTATION
 
 
-            // console.log(this.goodslist);
-            console.log(this.$store.state.shoplist);
+                console.log("这是res.data");
+                for (var i =0;i < res.data.length - 1;i++){
+                        this.$store.dispatch("ADD_SHOPCAR_ACTION",res.data[i].goodsData);
+                        console.log(res.data[i].goodsData);
+
+                }
+
+                // this.$store.dispatch("CART",res.data);
+            }).then(res=>{
+                console.log("11111cart");
+                console.log(this.$store.state.cart);
+                console.log("22222shoplist");
+                console.log(this.$store.state.shoplist);
+            })
+
+//          setTimeout("console.log(11111);",5000);
+
+            //console.log(this.$store.state.shoplist);
 
         },
+
         data(){
                 return{
                     num:"",
                     checkedValue:[],
-                    data:{
-                        vipshopPrice:0,
-                        buyPeople:1,
-                    }
+                    // data:{
+                    //     vipshopPrice:0,
+                    //     buyPeople:1,
+                    // }
                 }
         },
         methods:{
             handerclick(){
                     router.go(-1)
             },
-
             handleDelClick(data){
                     console.log(data);
                     this.$store.dispatch("DEL_SHOPCAR_ACTION",data);
                     // data =[];
                     this.checkedValue=[];
+                    axios.post(api.interface+"/api/removeshopcar",{
+						userId:this.$store.state.userId,
+					    listId:data.brandId,
+					    goodsindex:data.spuId,
+					}).then(res=>{
+						console.log(res)
+					})
 
-                },
-            numbut(data){
-                console.log("but")
+            },
+            sumbut(data){
+            	console.log(data);
+            	axios.post(api.interface+"/api/updatashopcar",{
+					userId:this.$store.state.userId,
+				    listId:data.brandId,
+				    goodsindex:data.spuId,
+				    goodsNum:data.buyPeople,
+				    goodsData:data
+				}).then(res=>{
+					console.log(res)
+				})
             }
         },
         computed:{
+        	cartlist(){
+
+        		return this.$store.state.cart;//从vuex拿到购物车数据
+        	},
             goodslist(){
                     return this.$store.state.shoplist; //拿到状态数据
             },
@@ -110,14 +151,10 @@
                 this.checkedValue.forEach(item=>{
                     sum+= item.vipshopPrice*(item.buyPeople + 1);
                 })
-
                 return sum;
             },
 
         },
-        beforeUpdate(){
-
-        }
     }
 
 </script>

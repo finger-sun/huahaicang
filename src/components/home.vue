@@ -2,13 +2,11 @@
     <div>
 	    <header class="appheader">
 	    	<div class="left">
-	    		<i class="logo iconfont icon-hua"></i>
-	    		<i class="logo iconfont icon-hai"></i>
-	    		<i class="logo iconfont icon-cang"></i>
+
 	    	</div>
 	    	<div class="right">
-	    		<router-link tag="span" to="/cart"><i class="hea iconfont icon-gouwuche"></i></router-link>
-	    		<router-link tag="span" to="/user"><i class="hea iconfont icon-ren-copy"></i></router-link>
+	    		<span @click="tocart()"><i class="hea iconfont icon-gouwuche"></i></span>
+	    		<span @click="touser()"><i class="hea iconfont icon-ren-copy"></i></span>
 	    	</div>
 	    </header>
 
@@ -52,12 +50,13 @@
     import axios from "axios";
     import Swiper from "swiper";
     import "swiper/dist/css/swiper.css"; //单独引入swiper css文件
+    import api from "../api";
 
     export default{
 
         mounted(){
             //请求后台数据
-            axios.get("/api/category").then(res=>{
+            axios.get(api.interface+"/api/category").then(res=>{
                 // console.log(res);
                 this.datalist = res.data[575];
                 this.cclist = res.data[893];
@@ -65,6 +64,7 @@
                 this.cclist3 = res.data[580];
                 this.main = res.data[582];
             })
+            this.userId = window.sessionStorage.getItem('userid');
 
         },
 
@@ -74,12 +74,25 @@
               cclist:[],
               cclist2:[],
               cclist3:[],
-              main :[]
+              main :[],
+              userId:"",
              }
          },
+		computed:{
 
+		},
          methods:{
-            swiperload(index){
+         	tocart(){
+         		axios.get("/api/logined").then(res=>{
+         			router.push(res.data?"/cart":"/login");
+         		})
+         	},
+         	touser(){
+         		axios.get("/api/logined").then(res=>{
+         			router.push(res.data?"/user":"/login");
+         		})
+         	},
+             swiperload(index){
                  if(index==this.datalist.length-1){
                      //初始化swiper对象
                          new Swiper('.swiper-container',{
@@ -97,16 +110,25 @@
              handleSkip(id){
                 var num = id.substring(6,15);
                 router.push(`/brand/${num}`);     //向子页发送的数据
-                // console.log(id);
+                console.log(id);
 
 
-            axios.get("/api/brand?id="+ num ).then(res=>{
-            console.log(res);
+                axios.get("/api/brand?id="+ num,{
+                    params:{
+                        page:1,
+                        sort1:"",
+                        sort2:"",
+                        sort3:"",
+                        sort4:1,
+                    }
+                }).then(res=>{
+                console.log(res);
+                console.log(6666666);
 
-             //向vuex中储存的
-             this.$store.dispatch("BRAND",res.data.data.goodsDtoList);
+                 //向vuex中储存的
+                 this.$store.dispatch("BRAND",res.data.data.goodsDtoList);
 
-            })
+                })
 
 
             }
@@ -122,80 +144,83 @@
 </script>
 
 <style lang="scss" scoped>
-	header.appheader .logo{
-		color:white;
-		font-size:.60rem;
-		}
-	i{
-		height:.67rem;
-	}
-	.hea{
-		color:white;
-		font-size:0.60rem;
-		line-height:0.6rem;
-	}
-    header.appheader{
-    	z-index:1;
-		height:.96rem;
-		line-height:.96rem;
-    	background: #dd2628;
-
-		overflow: hidden;
+    i{
+        height:.67rem;
     }
-	.right{
-		float:right;
-		height:.76rem;
-	}
-	.left{
-		float:left;
-		height:.76rem;
-		vertical-align: middle;
-		letter-spacing:0rem;
-	}
-	.cc{
-		display: flex;
-		height:3rem;
-		overflow: hidden;
-		justify-content: space-around;
-	}
-	.cc img{
-		width:100%;height:100%;
-	}
-	.cc .aleft{
-		width:49%;
+    .hea{
+        color:white;
+        font-size:0.52rem;
+        line-height:0.6rem;
+    }
+    header.appheader{
+        z-index:1;
+        height:.96rem;
+        line-height:.96rem;
+        background: #dd2628;
+        position:relative;
+        overflow: hidden;
+    }
+    .right{
+        position:absolute;
+        right:0.1rem;
+        top:-.12rem;
+        height:.76rem;
+    }
+    .left{
+        margin-top:0.25rem;
+        margin-left:0.2rem;
+        float:left;
+        width:2rem;
+        height:1rem;
+        vertical-align: middle;
+        letter-spacing:0rem;
+        background-image: url(../assets/data-image-png;base….png);
+        background-size:auto;
+        background-repeat: no-repeat;
+    }
+    .cc{
+        display: flex;
+        height:3rem;
+        overflow: hidden;
+        justify-content: space-around;
+    }
+    .cc img{
+        width:100%;height:100%;
+    }
+    .cc .aleft{
+        width:49%;
 
-	}
-	.cc .aright{
-		height:3rem;
-		display: flex;
-		flex-direction: column;
-		width:49%;
-		justify-content: space-around;
-	}
-	.arightin{
-		height:1.5rem;
-	}
-	.morning{
-		width:100%;height:100%;
-		overflow:hidden;
-		font-size:0rem;
-	}
-	.morning img{
-		width:100%;height:100%;
-	}
-	.main{
-		font-size:0rem;
-		width:100%;height:100%;
-	}
-	.main img{
-		width:100%;height:100%;
-	}
-	.swiper-container{
-		width:100%;
-		height:3rem;
-			img{
-				width: 100%;
-				height:100%;
-			}
-		}
+    }
+    .cc .aright{
+        height:3rem;
+        display: flex;
+        flex-direction: column;
+        width:49%;
+        justify-content: space-around;
+    }
+    .arightin{
+        height:1.5rem;
+    }
+    .morning{
+        width:100%;height:100%;
+        overflow:hidden;
+        font-size:0rem;
+    }
+    .morning img{
+        width:100%;
+    }
+    .main{
+        font-size:0rem;
+        width:100%;height:100%;
+    }
+    .main img{
+        width:100%;
+    }
+    .swiper-container{
+        width:100%;
+        height:3rem;
+            img{
+                width: 100%;
+            }
+        }
 </style>

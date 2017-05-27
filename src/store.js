@@ -11,12 +11,20 @@ const store = new vuex.Store({
         BrandIndex:"",//一类商品的下标
         shoplist:[],  //加入购物的商品信息
         sizeIndex:[], //商品尺码
+        userId:"",//用户名
+        cart:[],//数据库返回购物车的数据
+        address:"山东",
     },
 
     actions:{
+    	//数据库返回购物车的数据
+    	"CART":function(store,payload){
+    		store.commit("CART_MUTATION",payload);
+    		console.log(payload);
+    	},
         //商品列表
         "BRAND":function(store,payload){
-            console.log(payload);
+            // console.log(payload);
             store.commit("BRAND_MUTATION",payload);
         },
         //商品下标
@@ -29,7 +37,17 @@ const store = new vuex.Store({
             console.log(payload + "尺码");
             store.commit("BRAND_INDEX_MUTATION",payload);
         },
-        //加入购物车
+
+		"ADD_USERID":function(store,payload){
+
+            store.commit("ADDUSERID_INDEX_MUTATION",payload);
+        },
+
+        "DEL_USERID":function(store,payload){
+
+            store.commit("DELUSERID_INDEX_MUTATION",payload);
+        },
+
         "ADD_SHOPCAR_ACTION":function(store,payload){
             // console.log(payload);
             store.commit("ADD_SHOPCAR_MUTATION",payload);
@@ -45,10 +63,18 @@ const store = new vuex.Store({
         },
 
 
+        "ADD_ADDRESS_ACTION":function(store,payload){
+        	store.commit("ADD_ADDRESS_MUTATION",payload);
+        }
     },
 
     mutations:{
+    	"CART_MUTATION":function(state,payload){
+    		state.cart=payload;
+    	},
+        //商品列表
         "BRAND_MUTATION":function(state,payload){
+            console.log(payload);
             state.brand=payload;
         },
         "BRAND_INDEX_MUTATION":function(state,payload){
@@ -60,9 +86,22 @@ const store = new vuex.Store({
             // console(payload);
         },
 
+		"ADDUSERID_INDEX_MUTATION":function(state,payload){
+            state.userId = payload;
+            // console(payload);
+        },
+
+        "DELUSERID_INDEX_MUTATION":function(state,payload){
+            state.userid = "";
+            // console(payload);
+        },
+        "ADD_ADDRESS_MUTATION":function(state,payload){
+            state.address = payload;
+            console.log(payload);
+        },
         "ADD_SHOPCAR_MUTATION":function(state,payload){
             // state.shoplist.push(payload);
-            console.log(payload);
+            console.log(payload.buyPeople);
             console.log(payload.brandLogoUrl);
             console.log(state.shoplist[0]);
              var shoplist = state.shoplist.filter(item=>item.image==payload.image);

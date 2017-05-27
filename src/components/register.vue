@@ -3,16 +3,17 @@
     	<header>
     		<i></i>
     		<span>注册</span>
-    		<a href="/login">登录</a>
+    		<a href="#/login">登录</a>
     	</header>
     	<div id="registerMain">
-    		<form action="" method="post">
+    		<form action="/api/registervalidate" method="post">
     			<ul>
 	    			<li>
 	    				<label for="userId">手机号：</label>
-	    				<input type="text" name="userId" id="userId" placeholder="请输入手机号" />
+	    				<input type="text" name="userId" id="userId" placeholder="请输入手机号" @blur="userIdBlur()" v-model="userId"/>
 	    				<button >获取验证码</button>
 	    			</li>
+	    			<p class="warning">{{userIdPoint}}</p>
 	    			<p>短信验证码将发送至该手机号，请认真填写</p>
 	    			<li>
 	    				<label for="code">验证码：</label>
@@ -24,25 +25,35 @@
 	    			</li>
 	    		</ul>
     			<input type="submit" value="注册"/>
-    		</form> 
+    		</form>
     		<a href="/login">已有账号，去登录>></a>
     		<img src="https://h5rsc-ssl.vipstatic.com/hhcstatic/static/img/promise.6678896.png"/>
     	</div>
     </div>
 </template>
 <script>
+	import api from "../api";
+
     export default{
         mounted(){
 
         },
         data(){
             return{
-
+				userId:"",
+				userIdPoint:"",
+				userIdClass:"",
             }
         },
         methods:{
-
-            },
+			userIdBlur(){
+				axios.post(api.interface+"/api/findUser",{
+					userId:this.userId,
+				}).then(res=>{
+					this.userIdPoint = res.data?"该手机号已注册，请登录":"";
+				});
+			}
+        },
 
         computed:{
 
@@ -67,7 +78,7 @@
 			}
 			span{
 				font-size: 0.4rem;
-				font-weight: 700;		
+				font-weight: 700;
 			}
 			a{
 				text-decoration: none;
@@ -112,6 +123,9 @@
 				font-size: 0.28rem;
 				text-indent: 0.2rem;
 				margin-bottom: 0.3rem;
+			}
+			.warning{
+				color: #DD2628;
 			}
 			input[type="submit"]{
 				width: 100%;

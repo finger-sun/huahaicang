@@ -19,10 +19,8 @@ import Address from "./components/address.vue"  // 地区
 
 
 
-// import Customer from "./components/customer.vue"  //数据传递axios 模板
-// import Spouse from "./components/spouse.vue"
 
-const routes=[
+var routes=[
     {
         path:"/",
         redirect:"/home"
@@ -74,21 +72,13 @@ const routes=[
     },
 
 
-    // {
-    //     path:"/customer",
-    //     component:Customer
-    // },
-    // {
-    //     path:"/spouse",
-    //     component:Spouse
-    // }
 ]
 
 //实例化
 const router = new VueRouter({
-    mode: 'history', // url 看起来美观了 。，支持两个值hash,histroy
+    mode: 'hash', // url 看起来美观了 。，支持两个值hash,histroy
     routes  //es6  对象简写
-    })
+    });
 
 //导出路由
 export default router;
